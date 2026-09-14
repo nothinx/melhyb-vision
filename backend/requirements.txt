@@ -1,0 +1,12 @@
+fastapi>=0.115,<0.142
+uvicorn[standard]>=0.34
+sqlmodel>=0.0.22
+pydantic>=2.10
+pydantic-settings>=2.7
+python-multipart>=0.0.20
+opencv-python-headless>=4.10
+scikit-image>=0.25
+scikit-learn>=1.6
+numpy>=2.1
+joblib>=1.4
+Pillow>=11.0

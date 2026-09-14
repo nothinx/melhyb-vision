@@ -1,0 +1,616 @@
+@import "tailwindcss";
+
+/* ==================================================================
+   Font diswakelola, bukan diambil dari fonts.googleapis.com.
+
+   Alasannya dua. Pertama, lembar gaya pihak ketiga itu menghalangi render
+   dan duduk di jalur kritis LCP: dua koneksi baru sebelum satu piksel pun
+   tampil. Kedua, build satu-berkas (`build:tunggal`) dimaksudkan untuk
+   dibuka dari disk sebagai laporan — dengan font dari jaringan, berkas itu
+   kehilangan tipografinya begitu offline.
+
+   Hanya subset latin dan hanya sumbu/bobot yang benar-benar dipakai:
+   Archivo sumbu wght, Fraunces sumbu opsz (persis yang dulu diminta dari
+   Google), IBM Plex Mono cuma 400 dan 600. Bobot mono 500 dulu ikut
+   terunduh tanpa pernah dipakai.
+
+   Catatan: `.display` menyetel "SOFT" dan "WONK", tetapi berkas sumbu-opsz
+   tidak membawa kedua sumbu itu - sama seperti sebelumnya, karena URL
+   Google yang lama pun hanya meminta opsz,wght. Setelan itu diabaikan
+   diam-diam. Kalau memang diinginkan, ganti ke berkas `fraunces-latin-
+   full-normal.woff2` (121 kB, dari 67 kB).
+   ================================================================== */
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2")
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2")
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2")
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2")
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+/* ==================================================================
+   SIGMA — identitas visual "kertas blotter & laboratorium malam".
+
+   Rujukan bentuknya bukan aplikasi pertanian generik, melainkan dua
+   benda nyata di meja pengujian benih: kertas blotter tempat benih
+   dikecambahkan (hangat, sedikit kehijauan, berserat) dan panel
+   instrumen laboratorium (gelap, presisi, angka monospasi).
+
+   Warna deret grafik dipisahkan dari warna merek dan sudah lolos
+   validasi simulasi buta warna pada kedua latar — lihat README.
+   ================================================================== */
+
+:root {
+  /* --- kertas blotter --- */
+  --ground: #f6f8f0;
+  --plane: #edf1e2;
+  --surface: #fdfefa;
+  --surface-2: #f1f4e8;
+  --ink: #12170e;
+  --ink-2: #39402f;
+  --muted: #656c5c;
+  --line: #dde2cf;
+  --line-soft: #e9ecdd;
+  /* --line sengaja nyaris tak terlihat: itu tepi kertas, bukan tepi benda
+     yang bisa ditekan. Kontrol bergaris (tombol, select, chip) perlu batas
+     yang benar-benar terbaca — >=3:1, ambang WCAG 1.4.11 untuk komponen
+     antarmuka. Diambil dari rona --muted, dipudarkan sampai tepat di atas
+     ambang, supaya tetap sehalus mungkin. */
+  --garis-kontrol: #808974;
+
+  --accent: #0f6b4e;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2f1e7;
+  --accent-deep: #084733;
+  --tunas: #679424;
+
+  --ukur: #0f6b4e;
+  --estimasi: #8d5d0d;
+  --estimasi-soft: #f5ead1;
+
+  --series-1: #2a6fc9;
+  --series-2: #be7a10;
+  --series-3: #00926e;
+
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  /* Warna status apa adanya terlalu terang untuk teks kecil di atas kertas.
+     Tinta chip punya langkah sendiri per tema, supaya labelnya tetap
+     terbaca tanpa mengubah warna status pada grafik. Keempatnya diukur
+     >= 4,7:1 di atas latar chip (status @12-15% di atas ground DAN
+     surface), jadi lencana putusan tetap lolos WCAG AA pada teks 10,5px. */
+  --warning-ink: #8a5f0c;
+  --serious-ink: #a24521;
+  --good-ink: #097309;
+  --critical-ink: #b62c2c;
+
+  --grid: #e2e6d6;
+  --axis: #c7ceb6;
+
+  --bayang: 0 1px 2px rgb(18 23 14 / 0.05), 0 8px 24px -14px rgb(18 23 14 / 0.16);
+  --bayang-naik: 0 2px 4px rgb(18 23 14 / 0.06), 0 16px 40px -18px rgb(18 23 14 / 0.24);
+  --grain: 0.028;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #171e14;
+    --plane: #1d2519;
+    --surface: #222b1d;
+    --surface-2: #2c3624;
+    --ink: #e9eee0;
+    --ink-2: #c4ccb7;
+    --muted: #9aa192;
+    --line: #3a4530;
+    --line-soft: #313b28;
+    --garis-kontrol: #7a8470;
+
+    --accent: #3fcc94;
+    --accent-ink: #04231a;
+    --accent-soft: #1c4034;
+    --accent-deep: #8fe8c2;
+    --tunas: #a9d95a;
+
+    --ukur: #3fcc94;
+    --estimasi: #ddae55;
+    --estimasi-soft: #3a3018;
+
+    --series-1: #4488dc;
+    --series-2: #be8420;
+    --series-3: #0e9b74;
+
+    --warning-ink: #fab219;
+    --serious-ink: #ed8d67;
+    --good-ink: #0db90d;
+    --critical-ink: #e07c7c;
+
+    --grid: #232a1d;
+    --axis: #333c2a;
+
+    --bayang: 0 1px 2px rgb(0 0 0 / 0.5), 0 10px 30px -16px rgb(0 0 0 / 0.7);
+    --bayang-naik: 0 2px 6px rgb(0 0 0 / 0.55), 0 20px 50px -20px rgb(0 0 0 / 0.85);
+    --grain: 0.05;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground: #171e14;
+  --plane: #1d2519;
+  --surface: #222b1d;
+  --surface-2: #2c3624;
+  --ink: #e9eee0;
+  --ink-2: #c4ccb7;
+  --muted: #9aa192;
+  --line: #3a4530;
+  --line-soft: #313b28;
+  --garis-kontrol: #7a8470;
+
+  --accent: #3fcc94;
+  --accent-ink: #04231a;
+  --accent-soft: #1c4034;
+  --accent-deep: #8fe8c2;
+  --tunas: #a9d95a;
+
+  --ukur: #3fcc94;
+  --estimasi: #ddae55;
+  --estimasi-soft: #3a3018;
+
+  --series-1: #4488dc;
+  --series-2: #be8420;
+  --series-3: #0e9b74;
+
+  --warning-ink: #fab219;
+  --serious-ink: #ed8d67;
+  --good-ink: #0db90d;
+  --critical-ink: #e07c7c;
+
+  --grid: #232a1d;
+  --axis: #333c2a;
+
+  --bayang: 0 1px 2px rgb(0 0 0 / 0.5), 0 10px 30px -16px rgb(0 0 0 / 0.7);
+  --bayang-naik: 0 2px 6px rgb(0 0 0 / 0.55), 0 20px 50px -20px rgb(0 0 0 / 0.85);
+  --grain: 0.05;
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-plane: var(--plane);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-garis-kontrol: var(--garis-kontrol);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-deep: var(--accent-deep);
+  --color-tunas: var(--tunas);
+  --color-ukur: var(--ukur);
+  --color-estimasi: var(--estimasi);
+  --color-estimasi-soft: var(--estimasi-soft);
+  --color-good: var(--status-good);
+  --color-warning: var(--status-warning);
+  --color-serious: var(--status-serious);
+  --color-critical: var(--status-critical);
+  --color-warning-ink: var(--warning-ink);
+  --color-serious-ink: var(--serious-ink);
+  --color-good-ink: var(--good-ink);
+  --color-critical-ink: var(--critical-ink);
+
+  /* --- Skala huruf ---------------------------------------------------
+     Sebelumnya ada 16 ukuran acak yang dipakai berserakan: 11, 11,5, 12,
+     12,5, 13, 13,5, 14, 15, 15,5 ... Selisih setengah piksel tidak bisa
+     dibedakan mata, jadi itu bukan hierarki melainkan derau — dan derau itu
+     terlihat sebagai tata letak yang tidak rapi.
+
+     Tujuh langkah, masing-masing berjarak cukup untuk benar-benar terbaca
+     sebagai tingkatan berbeda, dan tiap langkah membawa tinggi barisnya
+     sendiri sehingga ritme vertikal ikut konsisten tanpa harus diatur satu
+     per satu di setiap tempat. Langkah teks kecil sengaja dinaikkan: 13px
+     jadi 14px, 9,5px jadi 11px — layar lapangan dibaca sambil berdiri, dan
+     11px adalah lantai keterbacaan yang wajar. */
+  --text-mikro: 0.75rem;
+  --text-mikro--line-height: 1.45;
+  --text-kecil: 0.8125rem;
+  --text-kecil--line-height: 1.5;
+  --text-dasar: 0.9375rem;
+  --text-dasar--line-height: 1.6;
+  --text-sedang: 15.5px;
+  --text-sedang--line-height: 1.65;
+  --text-judul-kecil: 17px;
+  --text-judul-kecil--line-height: 1.35;
+  --text-judul: 20px;
+  --text-judul--line-height: 1.25;
+  --text-angka: 30px;
+  --text-angka--line-height: 1.1;
+
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --shadow-kartu: var(--bayang);
+  --shadow-naik: var(--bayang-naik);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      color-scheme: dark;
+    }
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Butiran kertas — halus, tetapi cukup untuk membuat bidang datar
+     terasa punya permukaan. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  /* Lebar baca. Pada layar lebar, teks di dalam kartu selebar penuh bisa
+     mencapai 140 karakter per baris — mata kehilangan posisi saat berpindah
+     ke baris berikutnya. 68ch menahannya di rentang yang nyaman tanpa
+     memaksa kartunya jadi sempit. */
+  .ukuran-baca {
+    max-width: 68ch;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.065em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Fraunces dipakai dengan sumbu opsz tinggi dan sedikit "wonk" —
+     memberi kesan huruf cetak bungkus benih, bukan serif korporat. */
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings:
+      "opsz" 120,
+      "SOFT" 20,
+      "WONK" 1;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    /* 1,03 membuat ekor huruf bertabrakan dengan baris berikutnya. Bahasa
+       Indonesia menumpuk descender dalam satu kata — "dipertanggungjawabkan"
+       punya g-g-j berurutan — dan pada judul tiga baris ekornya menembus
+       ascender di bawahnya. 1,08 masih rapat untuk ukuran display, tetapi
+       barisnya tidak lagi saling menyentuh. */
+    line-height: 1.08;
+  }
+
+  /* Judul halaman. Sebelumnya tiap rute menulis clamp-nya sendiri dan ada
+     empat rumus berbeda untuk tingkat yang sama — halaman jadi terasa
+     bergeser-geser saat berpindah. Dua kelas saja: satu untuk pembuka, satu
+     untuk semua judul rute lain. */
+  .judul-utama {
+    font-size: clamp(28px, 4.4vw, 42px);
+  }
+  .judul-halaman {
+    font-size: clamp(25px, 3.6vw, 34px);
+  }
+
+  .display-kecil {
+    font-family: var(--font-display);
+    font-variation-settings:
+      "opsz" 40,
+      "SOFT" 10,
+      "WONK" 0;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+
+  /* Aksen dua warna pada judul: viridian ke tunas. */
+  .tinta-tunas {
+    background: linear-gradient(
+      100deg,
+      var(--accent) 0%,
+      var(--accent) 35%,
+      var(--tunas) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .kartu {
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .naik {
+    transition:
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .naik:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--bayang-naik);
+  }
+
+  /* Penanda untuk anime.js. Sengaja TIDAK menyembunyikan apa pun lewat
+     CSS: kalau JS gagal, atau elemen baru muncul setelah pengamat selesai,
+     isinya akan hilang selamanya. Animasi hanya boleh menambah. */
+  .reveal {
+    scroll-margin-top: 7rem;
+  }
+
+  /* Dua animasi masuk yang dulu dikerjakan framer-motion. Sebagai keyframe
+     CSS keduanya ikut dimatikan blok prefers-reduced-motion di bawah —
+     animasi JS framer tidak, karena media query tidak menyentuh inline
+     style. Keadaan akhirnya terlihat penuh, jadi kalau animasinya tidak
+     jalan sama sekali isinya tetap ada. */
+  @keyframes masuk-halaman {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  .masuk-halaman {
+    animation: masuk-halaman 0.22s cubic-bezier(0, 0, 0.2, 1) both;
+  }
+
+  /* ---- Gerak tambahan ----------------------------------------------
+     Semuanya keyframe CSS, jadi blok prefers-reduced-motion di bawah
+     mematikannya sekaligus — tidak ada satu pun yang perlu diingat satu
+     per satu. Setiap keyframe hanya punya `from`, sehingga keadaan akhir
+     adalah keadaan diam: kalau animasinya tidak jalan sama sekali, yang
+     terlihat tetap tampilan penuh, tidak ada yang hilang. */
+
+  /* Kilau yang berjalan di sepanjang rangka pemuatan. Menggantikan
+     animate-pulse yang cuma berkedip di tempat. */
+  @keyframes kilau {
+    from {
+      background-position: 180% 0;
+    }
+    to {
+      background-position: -80% 0;
+    }
+  }
+  .kilau {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in oklab, var(--ink) 7%, transparent) 45%,
+      transparent 90%
+    );
+    background-size: 220% 100%;
+    background-repeat: no-repeat;
+    animation: kilau 1.5s linear infinite;
+  }
+
+  @keyframes masuk-lembut {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  .masuk-lembut {
+    animation: masuk-lembut 0.2s cubic-bezier(0, 0, 0.2, 1) both;
+  }
+}
+
+.bingkai { max-width: 1280px; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 3rem); }
+.kepala-aplikasi { border-bottom: 1px solid var(--line); background: var(--ground); }
+.baris-merek { display: flex; align-items: center; gap: 1rem; min-height: 86px; }
+.merek { display: flex; align-items: center; gap: 0.7rem; color: var(--ink); text-decoration: none; }
+.merek > svg { color: var(--accent); }
+.merek strong { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: -0.06em; }
+.keterangan-merek { font-size: 0.75rem; line-height: 1.4; color: var(--muted); padding-left: 1rem; border-left: 1px solid var(--line); }
+.navigasi-meja { display: flex; gap: 1.25rem; padding-bottom: 0; }
+.navigasi-meja a { min-height: 48px; display: flex; align-items: center; font-size: 0.875rem; color: var(--muted); border-bottom: 2px solid transparent; }
+.navigasi-meja a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.isi-aplikasi { padding-top: 2.25rem; padding-bottom: 3rem; }
+.kaki-aplikasi { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--line); padding-block: 1.5rem; color: var(--muted); font-size: 0.75rem; }
+.menu-ponsel { display: none; }
+.beranda { display: grid; gap: 0; }
+.pembuka { display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: 3rem; padding: 1.5rem 0 3rem; }
+.nomor-bagian { font-size: 0.75rem; font-weight: 500; color: var(--muted); margin: 0 0 1rem; }
+.judul-spesimen { font-size: clamp(2.75rem, 5.2vw, 4.5rem); font-weight: 450; line-height: 1.08; margin: 0; letter-spacing: -0.04em; }
+.judul-spesimen em, .catatan-metode h2 em { color: var(--accent); font-style: normal; }
+.pengantar { max-width: 38ch; font-size: 1rem; color: var(--ink-2); line-height: 1.75; margin-block: 1.5rem 1.75rem; }
+.tombol-analisis { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 52px; background: var(--accent); color: var(--accent-ink); padding: 0.7rem 1.2rem; border-radius: 4px; font-size: 0.9375rem; font-weight: 600; transition: background 180ms, transform 180ms; }
+.tombol-analisis:hover { background: var(--accent-deep); color: var(--ground); }
+.tombol-analisis:active { transform: translateY(1px); }
+.catatan-pembuka { font-size: 0.75rem; color: var(--muted); margin-top: 0.9rem; }
+.spesimen { min-width: 0; margin: 0; padding: 1.25rem; background: var(--plane); border-radius: 4px; }
+.spesimen-label { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; font-size: 0.75rem; color: var(--ink-2); }
+.spesimen-label em { font-family: var(--font-display); }
+.spesimen-panggung { position: relative; height: clamp(280px, 28vw, 375px); }
+.spesimen-kanvas { position: absolute; inset: 0; }
+.spesimen-kanvas canvas { display: block; cursor: grab; }
+.spesimen-kanvas canvas:active { cursor: grabbing; }
+.spesimen-cawan { position: absolute; width: 83%; aspect-ratio: 1; max-height: 96%; left: 50%; top: 50%; transform: translate(-50%, -50%) scaleY(0.8); border-radius: 50%; border: 1px solid var(--garis-kontrol); background: var(--surface); box-shadow: inset 0 0 0 7px var(--plane), inset 0 0 0 8px var(--line), 0 14px 25px -24px var(--ink); }
+.spesimen-statis { position: absolute; inset: 20% 14%; display: grid; grid-template-columns: repeat(6, 1fr); align-items: center; justify-items: center; gap: 0.6rem; }
+.spesimen-statis i { width: 30px; height: 15px; background: #d8ad68; border: 1px solid #95703b; border-radius: 80% 25% 80% 25%; transform: rotate(-25deg); }
+.spesimen-kontrol { display: flex; gap: 1rem; justify-content: space-between; align-items: center; }
+.pilihan-susunan { display: flex; border: 1px solid var(--garis-kontrol); border-radius: 4px; }
+.pilihan-susunan button { min-height: 44px; padding: 0.5rem 0.85rem; font-size: 0.8125rem; cursor: pointer; color: var(--ink-2); }
+.pilihan-susunan button[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+.putar-spesimen { width: 44px; height: 44px; font-size: 1.5rem; border: 1px solid var(--garis-kontrol); border-radius: 4px; cursor: pointer; color: var(--ink); }
+.putar-spesimen:hover { background: var(--surface); }
+.spesimen button:disabled { cursor: default; opacity: 0.45; }
+.spesimen figcaption { margin-top: 0.85rem; font-size: 0.75rem; color: var(--ink-2); }
+.pita-pengukuran { display: grid; grid-template-columns: 1.15fr repeat(3, 1fr); gap: 1.5rem; border-block: 1px solid var(--line); padding-block: 1.75rem; }
+.pita-pengukuran > div { display: flex; flex-direction: column; justify-content: center; }
+.pita-pengukuran p { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.35; margin: 0; }
+.pita-pengukuran .nomor-bagian { margin-bottom: 0.5rem; }
+.pita-pengukuran > div > span:last-child { font-size: 0.8125rem; color: var(--muted); }
+.angka-ringkas { font-size: 2.5rem; line-height: 1.2; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.angka-ringkas small { font-size: 0.85rem; color: var(--muted); margin-left: 0.3rem; letter-spacing: 0; }
+.ruang-kerja { display: grid; grid-template-columns: 1.65fr 1fr; gap: 3rem; padding-block: 3rem; }
+.judul-bagian { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+.judul-bagian h2, .panel-kalibrasi h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; margin: 0; letter-spacing: -0.025em; }
+.judul-bagian .nomor-bagian, .panel-kalibrasi .nomor-bagian { margin-bottom: 0.4rem; }
+.judul-bagian > a, .tautan-teks { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; color: var(--accent); font-size: 0.8125rem; font-weight: 600; }
+.tautan-teks:hover, .judul-bagian > a:hover { text-decoration: underline; }
+.tautan-lot { display: flex; flex-direction: column; min-height: 44px; justify-content: center; font-weight: 600; }
+.tautan-lot:hover { color: var(--accent); text-decoration: underline; }
+.tautan-lot span { text-transform: capitalize; color: var(--muted); font-size: 0.8125rem; font-weight: 400; }
+.panel-kalibrasi { padding-left: 2rem; border-left: 1px solid var(--line); }
+.daftar-model { list-style: none; margin: 1rem 0; padding: 0; }
+.daftar-model li { display: flex; align-items: center; gap: 0.75rem; justify-content: space-between; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+.daftar-model li > div { display: flex; flex-direction: column; font-size: 0.9375rem; }
+.daftar-model li > div > span { font-size: 0.75rem; color: var(--muted); }
+.catatan-metode { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; border-top: 1px solid var(--line); padding-block: 3rem 1rem; }
+.catatan-metode h2 { font-size: clamp(1.75rem, 3vw, 2.65rem); font-weight: 450; line-height: 1.15; margin-bottom: 1.5rem; }
+.catatan-metode dl { margin: 0; }
+.catatan-metode dl > div { padding-block: 1rem; border-bottom: 1px solid var(--line); }
+.catatan-metode dl > div:first-child { padding-top: 0; }
+.catatan-metode dt { font-weight: 600; font-size: 0.9375rem; }
+.catatan-metode dd { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.875rem; }
+.catatan-metode dd a { text-decoration: underline; color: var(--accent); }
+@media (max-width: 900px) {
+  .pembuka { gap: 1.5rem; }
+  .navigasi-meja { gap: 1rem; flex-wrap: wrap; }
+  .ruang-kerja { grid-template-columns: 1fr; gap: 2rem; }
+  .panel-kalibrasi { border-left: 0; border-top: 1px solid var(--line); padding: 1.5rem 0 0; }
+}
+@media (max-width: 639px) {
+  .keterangan-merek, .navigasi-meja { display: none; }
+  .baris-merek { min-height: 72px; }
+  .menu-ponsel { display: block; position: relative; margin-left: auto; }
+  .menu-ponsel summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; border: 1px solid var(--garis-kontrol); border-radius: 4px; padding: 0.5rem 0.75rem; }
+  .menu-ponsel nav { position: absolute; top: calc(100% + 0.5rem); right: 0; z-index: 40; min-width: 220px; padding: 0.5rem; background: var(--surface); border: 1px solid var(--garis-kontrol); box-shadow: var(--bayang-naik); }
+  .menu-ponsel nav a { display: flex; align-items: center; min-height: 44px; padding-inline: 0.75rem; }
+  .menu-ponsel nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .isi-aplikasi { padding-top: 1.5rem; }
+  .pembuka { grid-template-columns: 1fr; padding-top: 0; padding-bottom: 2rem; gap: 2rem; }
+  .judul-spesimen { font-size: clamp(2.75rem, 11vw, 4rem); }
+  .pengantar { max-width: 40ch; }
+  .spesimen { padding: 1rem; }
+  .pita-pengukuran { grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+  .pita-pengukuran > div:first-child { grid-column: 1 / -1; }
+  .pita-pengukuran p br { display: none; }
+  .ruang-kerja { padding-block: 2rem; }
+  .catatan-metode { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 2rem; }
+}
+
+/* Recharts: teks internalnya tidak mewarisi token, jadi dipaksa. */
+.recharts-cartesian-axis-tick text,
+.recharts-label {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+.recharts-cartesian-grid line {
+  stroke: var(--grid);
+}
+.recharts-surface {
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    /* Durasi 0,001ms saja tidak cukup untuk animasi yang berulang tanpa
+       henti: kilau akan tetap berputar ribuan kali per detik.
+       Hitungannya harus dipatok, bukan durasinya. */
+    animation-iteration-count: 1 !important;
+  }
+  .reveal {
+    will-change: auto;
+  }
+  .kilau {
+    background-image: none;
+  }
+}

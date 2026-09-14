@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest>=8.0
+# Klien HTTP untuk starlette.testclient. Sejak Starlette 1.6 paket
+# `httpx` masih dipakai sebagai cadangan tetapi sudah deprecated —
+# testclient mencari `httpx2` lebih dulu.
+httpx2>=2.12

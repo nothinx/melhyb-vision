@@ -1,0 +1,795 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Bacaan Mutu Benih</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>Bacaan Mutu Benih</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground: #f2f4ec;
+    --surface: #fbfcf6;
+    --surface-2: #eaeee0;
+    --ink: #12170e;
+    --ink-2: #39402f;
+    --muted: #6a7261;
+    --line: #d9decb;
+    --line-soft: #e6e9da;
+    --accent: #0f6b4e;
+    --accent-ink: #ffffff;
+    --accent-soft: #dcede2;
+    --tunas: #5d8a20;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0b0f09;
+      --surface: #151a13;
+      --surface-2: #1d2419;
+      --ink: #e9eee0;
+      --ink-2: #c4ccb7;
+      --muted: #8a9280;
+      --line: #2a3122;
+      --line-soft: #222819;
+      --accent: #3fcc94;
+      --accent-ink: #04231a;
+      --accent-soft: #14332a;
+      --tunas: #a9d95a;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0b0f09;
+    --surface: #151a13;
+    --surface-2: #1d2419;
+    --ink: #e9eee0;
+    --ink-2: #c4ccb7;
+    --muted: #8a9280;
+    --line: #2a3122;
+    --line-soft: #222819;
+    --accent: #3fcc94;
+    --accent-ink: #04231a;
+    --accent-soft: #14332a;
+    --tunas: #a9d95a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 0 20px 88px;
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "opsz" 110, "SOFT" 20, "WONK" 1;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+
+  header.mast { padding: 52px 0 26px; }
+
+  h1 { font-size: clamp(30px, 5vw, 44px); margin: 0 0 16px; }
+
+  .dek {
+    font-size: 16.5px;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 40rem;
+  }
+
+  .catatan-sumber {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+    color: var(--muted);
+    max-width: 42rem;
+  }
+  .catatan-sumber strong { color: var(--ink-2); font-weight: 600; }
+
+  h2.bagian {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "opsz" 40;
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: -0.01em;
+    margin: 54px 0 4px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .bagian-ket {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 12px 0 0;
+    max-width: 42rem;
+  }
+
+  ol.daftar {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li.entri {
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: grid;
+    gap: 10px;
+  }
+  li.entri:last-child { border-bottom: 0; }
+
+  .kepala {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .kode {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--accent-ink);
+    background: var(--accent);
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex: none;
+  }
+  .terbit {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .judul {
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.34;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .judul a { color: var(--ink); text-decoration: none; }
+  .judul a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+  .penulis {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    margin: 0;
+  }
+  .wadah {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .wadah em { font-style: italic; }
+
+  .ambil {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin: 4px 0 0;
+    max-width: 42rem;
+  }
+  .ambil b { color: var(--ink); font-weight: 600; }
+
+  .rumus {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    margin: 4px 0 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .tautan {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .tautan a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 0 13px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .tautan a:hover { background: var(--surface-2); color: var(--ink); }
+  .tautan a.utama {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .tautan a.utama:hover { filter: brightness(1.1); background: var(--accent); color: var(--accent-ink); }
+  .tautan svg { flex: none; }
+
+  .sitasi {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 6px 0 0;
+    padding-left: 12px;
+    border-left: 1px solid var(--line);
+    word-break: break-word;
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .panel {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 22px 24px;
+    margin-top: 26px;
+  }
+  .panel h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "opsz" 30;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .panel p { margin: 0 0 12px; color: var(--ink-2); font-size: 14px; }
+  .panel p:last-child { margin-bottom: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 30rem;
+  }
+  .gulir { overflow-x: auto; }
+  th, td {
+    text-align: left;
+    padding: 9px 10px 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+  }
+  td.mono {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  button.salin {
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 6px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.salin:hover { filter: brightness(1.1); }
+  #pesan-salin { font-size: 13px; color: var(--muted); margin-left: 12px; }
+
+  #semua-sitasi {
+    width: 100%;
+    min-height: 190px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface-2);
+    color: var(--ink-2);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    line-height: 1.75;
+    resize: vertical;
+  }
+
+  footer.kaki {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.001ms !important; }
+  }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Daftar bacaan terverifikasi</p>
+  <h1 class="display">Sepuluh jurnal untuk belajar mengukur mutu benih</h1>
+  <p class="dek">
+    Lima jurnal internasional dan lima jurnal nasional, dipilih untuk satu
+    tujuan: memahami bagaimana daya berkecambah, vigor, dan keserempakan
+    tumbuh benar-benar dihitung — lalu bagaimana analisis citra dipakai
+    untuk memperkirakannya.
+  </p>
+
+  <p class="catatan-sumber">
+    <strong>Setiap tautan sudah dibuka dan diperiksa isinya</strong>, bukan
+    disalin dari daftar hasil pencarian. Judul, penulis, nomor volume, dan
+    halaman diambil dari berkas aslinya. Agar tetap bisa dipakai walau tautan
+    unduhan berubah, setiap entri diberi tiga jalan: unduh langsung, tautan
+    DOI yang permanen, dan pencarian judul.
+  </p>
+</header>
+
+<h2 class="bagian">Jurnal internasional</h2>
+<p class="bagian-ket">
+  Diurutkan dari yang paling mendasar. Dua pertama mengajarkan cara
+  menghitung; tiga berikutnya menunjukkan bagaimana citra dan pembelajaran
+  mesin dipakai untuk memperkirakan hasil hitungan itu.
+</p>
+
+<ol class="daftar">
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">INT-1</span>
+      <span class="terbit">2006 &middot; Brazilian Journal of Botany</span>
+    </div>
+    <p class="judul">
+      <a href="https://www.scielo.br/j/rbb/a/ZfHBJBGtpDcXzfknWfmNM4G/?lang=en&amp;format=pdf" target="_blank" rel="noopener noreferrer">How and why to measure the germination process?</a>
+    </p>
+    <p class="penulis">Marli A. Ranal, Denise Garcia de Santana</p>
+    <p class="wadah"><em>Brazilian Journal of Botany</em> 29(1): 1&ndash;11 &middot; DOI 10.1590/S0100-84042006000100002</p>
+    <p class="ambil">
+      <b>Mulai dari sini.</b> Satu makalah yang mengumpulkan hampir seluruh
+      cara mengukur perkecambahan beserta rumusnya: germinabilitas, waktu
+      berkecambah rata-rata, laju perkecambahan (Maguire, Timson, Czabator),
+      koefisien keseragaman, dan indeks sinkronisasi. Bacaan ini menjelaskan
+      <b>mengapa</b> tiap indeks dibuat, bukan hanya bagaimana menghitungnya
+      — persis yang dibutuhkan untuk menulis Bab 3.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://www.scielo.br/j/rbb/a/ZfHBJBGtpDcXzfknWfmNM4G/?lang=en&amp;format=pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://www.scielo.br/j/rbb/a/ZfHBJBGtpDcXzfknWfmNM4G/?lang=en" target="_blank" rel="noopener noreferrer">Halaman artikel</a>
+      <a href="https://doi.org/10.1590/S0100-84042006000100002" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=How+and+why+to+measure+the+germination+process" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Ranal, M.A. dan Santana, D.G. de (2006) &lsquo;How and why to measure the germination process?&rsquo;, <em>Brazilian Journal of Botany</em>, 29(1), hlm. 1&ndash;11.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">INT-2</span>
+      <span class="terbit">2012 &middot; Seed Science Research</span>
+    </div>
+    <p class="judul">
+      <a href="https://saveplants.org/wp-content/uploads/2019/05/McNair-et-al.-2012.pdf" target="_blank" rel="noopener noreferrer">How to analyse seed germination data using statistical time-to-event analysis: non-parametric and semi-parametric methods</a>
+    </p>
+    <p class="penulis">James N. McNair, Anusha Sunkara, Daniel Frobish</p>
+    <p class="wadah"><em>Seed Science Research</em> 22(2): 77&ndash;95 &middot; DOI 10.1017/S0960258511000547</p>
+    <p class="ambil">
+      Lanjutan dari INT-1, dan sekaligus kritiknya. Makalah ini menunjukkan
+      kelemahan indeks perkecambahan konvensional, lalu mengajarkan analisis
+      <b>time-to-event</b> — Kaplan&ndash;Meier dan model Cox — yang
+      memperlakukan benih yang belum berkecambah di akhir pengamatan sebagai
+      data tersensor, bukan sebagai kegagalan. Berguna kalau kalian ingin
+      analisis statistik yang lebih kuat daripada sekadar persentase.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://saveplants.org/wp-content/uploads/2019/05/McNair-et-al.-2012.pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://doi.org/10.1017/S0960258511000547" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=How+to+analyse+seed+germination+data+using+statistical+time-to-event+analysis" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">McNair, J.N., Sunkara, A. dan Frobish, D. (2012) &lsquo;How to analyse seed germination data using statistical time-to-event analysis&rsquo;, <em>Seed Science Research</em>, 22(2), hlm. 77&ndash;95.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">INT-3</span>
+      <span class="terbit">2020 &middot; Sensors (MDPI)</span>
+    </div>
+    <p class="judul">
+      <a href="https://www.mdpi.com/1424-8220/20/15/4319/pdf" target="_blank" rel="noopener noreferrer">Machine Learning for Seed Quality Classification: An Advanced Approach Using Merger Data from FT-NIR Spectroscopy and X-ray Imaging</a>
+    </p>
+    <p class="penulis">André D. de Medeiros, Laércio J. da Silva, João P. O. Ribeiro, Kamylla C. Ferreira, Jorge T. F. Rosas, Abraão A. Santos, Clíssia B. da Silva</p>
+    <p class="wadah"><em>Sensors</em> 20(15): 4319 &middot; DOI 10.3390/s20154319 &middot; akses terbuka</p>
+    <p class="ambil">
+      <b>Paling dekat dengan SIGMA.</b> Mereka mengambil 17 deskriptor
+      morfometrik dari citra tiap benih, lalu melatih lima algoritme
+      (LDA, PLS-DA, Random Forest, Naive Bayes, SVM) untuk memprediksi daya
+      berkecambah dan vigor. Perhatikan cara mereka melaporkan hasil: model
+      dibandingkan satu sama lain dan divalidasi terhadap uji perkecambahan
+      sungguhan — bukan diklaim akurat begitu saja.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://www.mdpi.com/1424-8220/20/15/4319/pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://doi.org/10.3390/s20154319" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=Machine+Learning+for+Seed+Quality+Classification+FT-NIR+X-ray" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Medeiros, A.D. de <em>et al.</em> (2020) &lsquo;Machine learning for seed quality classification: an advanced approach using merger data from FT-NIR spectroscopy and X-ray imaging&rsquo;, <em>Sensors</em>, 20(15), 4319.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">INT-4</span>
+      <span class="terbit">2023 &middot; Agronomy (MDPI)</span>
+    </div>
+    <p class="judul">
+      <a href="https://www.mdpi.com/2073-4395/13/4/1167/pdf" target="_blank" rel="noopener noreferrer">Current Optical Sensing Applications in Seeds Vigor Determination</a>
+    </p>
+    <p class="penulis">Jian Zhang, Weikai Fang, Chidong Xu, Aisheng Xiong, Michael Zhang, Randy Goebel, Guangyu Bo</p>
+    <p class="wadah"><em>Agronomy</em> 13(4): 1167 &middot; DOI 10.3390/agronomy13041167 &middot; akses terbuka</p>
+    <p class="ambil">
+      Tinjauan menyeluruh atas seluruh cara optik menilai vigor benih: citra
+      RGB biasa, hiperspektral, sinar-X, sampai fluoresensi. Pakai makalah ini
+      untuk menyusun <b>sub-bab pembanding di Bab 2</b> — ia memberi peta
+      lengkap apa yang sudah dikerjakan orang lain, sehingga posisi SIGMA
+      sebagai pendekatan berbiaya rendah dengan kamera ponsel jadi jelas
+      celahnya di mana.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://www.mdpi.com/2073-4395/13/4/1167/pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://doi.org/10.3390/agronomy13041167" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=Current+Optical+Sensing+Applications+in+Seeds+Vigor+Determination" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Zhang, J. <em>et al.</em> (2023) &lsquo;Current optical sensing applications in seeds vigor determination&rsquo;, <em>Agronomy</em>, 13(4), 1167.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">INT-5</span>
+      <span class="terbit">2025 &middot; GigaScience</span>
+    </div>
+    <p class="judul">
+      <a href="https://academic.oup.com/gigascience/article-pdf/doi/10.1093/gigascience/giaf129/64718500/giaf129.pdf" target="_blank" rel="noopener noreferrer">SeedGerm-VIG: an open and comprehensive pipeline to quantify seed vigor in wheat and other cereal crops using deep learning&ndash;powered dynamic phenotypic analysis</a>
+    </p>
+    <p class="penulis">Jie Dai, Zhenjie Wen, Mujahid Ali, Jinlong Huang, Shuchen Liu, Jianhua Zhao, Felipe Pinheiro, Changcai Yang, Bin Wang, Lingzhen Ye, Xueying Guan, Ji Zhou</p>
+    <p class="wadah"><em>GigaScience</em> 14: giaf129 &middot; DOI 10.1093/gigascience/giaf129 &middot; akses terbuka</p>
+    <p class="ambil">
+      Yang paling mutakhir, dan pembanding paling berat. Mereka memotret benih
+      berulang kali selama proses berkecambah, lalu memakai YOLOv8 dan U-Net
+      untuk mengenali fase perkecambahan serta mengukur kecepatan dan
+      keserempakannya secara otomatis. <b>Perhatikan bedanya dengan SIGMA:</b>
+      mereka memotret deret waktu, kalian memotret sekali. Perbedaan itu wajib
+      kalian sebut sendiri di Bab 2 sebelum penguji yang menyebutkannya.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://academic.oup.com/gigascience/article-pdf/doi/10.1093/gigascience/giaf129/64718500/giaf129.pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://doi.org/10.1093/gigascience/giaf129" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=SeedGerm-VIG+pipeline+quantify+seed+vigor+deep+learning" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Dai, J. <em>et al.</em> (2025) &lsquo;SeedGerm-VIG: an open and comprehensive pipeline to quantify seed vigor in wheat and other cereal crops&rsquo;, <em>GigaScience</em>, 14, giaf129.</p>
+  </li>
+
+</ol>
+
+<h2 class="bagian">Jurnal nasional</h2>
+<p class="bagian-ket">
+  Dipilih karena mencantumkan rumus perhitungannya secara eksplisit dalam
+  bahasa Indonesia — sehingga istilah yang kalian pakai di proposal sama
+  persis dengan yang dipakai penguji.
+</p>
+
+<ol class="daftar">
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">NAS-1</span>
+      <span class="terbit">2017 &middot; Savana Cendana</span>
+    </div>
+    <p class="judul">
+      <a href="https://media.neliti.com/media/publications/237688-test-of-the-viability-and-vigor-of-rice-99e6d37f.pdf" target="_blank" rel="noopener noreferrer">Uji Viabilitas dan Vigor Benih Padi (Oryza sativa L.) selama Penyimpanan pada Tingkat Kadar Air yang Berbeda</a>
+    </p>
+    <p class="penulis">Anna Tefa</p>
+    <p class="wadah"><em>Savana Cendana</em> 2(3): 48&ndash;50</p>
+    <p class="ambil">
+      <b>Rujukan rumus paling ringkas.</b> Empat rumus lengkap dalam tiga
+      halaman: daya berkecambah, kecepatan tumbuh, keserempakan tumbuh, dan
+      indeks vigor. Kalau kalian hanya sempat membaca satu jurnal nasional,
+      baca yang ini.
+    </p>
+    <p class="rumus">DB  = (KN hitungan I + KN hitungan II) / benih ditanam x 100%
+KCT = jumlah (Nt / tn)          satuan %/etmal
+KST = KN hari ke-6 / benih ditanam x 100%
+IV  = KN hitungan I / benih ditanam x 100%</p>
+    <div class="tautan">
+      <a class="utama" href="https://media.neliti.com/media/publications/237688-test-of-the-viability-and-vigor-of-rice-99e6d37f.pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://scholar.google.com/scholar?q=Uji+Viabilitas+dan+Vigor+Benih+Padi+selama+Penyimpanan+Tefa" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Tefa, A. (2017) &lsquo;Uji viabilitas dan vigor benih padi (Oryza sativa L.) selama penyimpanan pada tingkat kadar air yang berbeda&rsquo;, <em>Savana Cendana</em>, 2(3), hlm. 48&ndash;50.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">NAS-2</span>
+      <span class="terbit">2023 &middot; Jurnal AGRO</span>
+    </div>
+    <p class="judul">
+      <a href="https://journal.uinsgd.ac.id/index.php/ja/article/download/28159/pdf" target="_blank" rel="noopener noreferrer">Pengaruh Tingkat Infeksi Antraknosa (Colletotrichum capsici) terhadap Viabilitas dan Vigor Benih Tiga Varietas Cabai Besar (Capsicum annuum L.)</a>
+    </p>
+    <p class="penulis">Atin Yulyatin, Abdul Qadir, Satriyas Ilyas, Bagus Kukuh Udiarto</p>
+    <p class="wadah"><em>Jurnal AGRO</em> 10(2): 217&ndash;230</p>
+    <p class="ambil">
+      Rumus yang sama, tetapi ditulis oleh kelompok ilmu benih IPB — termasuk
+      Satriyas Ilyas, salah satu rujukan utama teknologi benih di Indonesia.
+      Nilai tambahnya: makalah ini menunjukkan bagaimana <b>cacat yang terlihat
+      pada benih</b> (infeksi antraknosa) berhubungan dengan turunnya viabilitas
+      — persis logika yang menjadi dasar SIGMA memakai proporsi cacat sebagai
+      indeks terukur.
+    </p>
+    <p class="rumus">DB  = (KN I + KN II) / benih ditanam x 100%
+KCT = jumlah (%KN per etmal)
+KST = (KN hari ke-10 + KN hari ke-11) / 2 / benih ditanam x 100%
+IV  = KN hitungan I / benih ditanam x 100%</p>
+    <div class="tautan">
+      <a class="utama" href="https://journal.uinsgd.ac.id/index.php/ja/article/download/28159/pdf" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://scholar.google.com/scholar?q=Pengaruh+Tingkat+Infeksi+Antraknosa+Viabilitas+Vigor+Benih+Cabai+Yulyatin" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Yulyatin, A., Qadir, A., Ilyas, S. dan Udiarto, B.K. (2023) &lsquo;Pengaruh tingkat infeksi antraknosa (Colletotrichum capsici) terhadap viabilitas dan vigor benih tiga varietas cabai besar&rsquo;, <em>Jurnal AGRO</em>, 10(2), hlm. 217&ndash;230.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">NAS-3</span>
+      <span class="terbit">2021 &middot; Agriprima</span>
+    </div>
+    <p class="judul">
+      <a href="https://agriprima.polije.ac.id/index.php/journal/article/download/v5i1-g/pdf/1811" target="_blank" rel="noopener noreferrer">Modification of Invigoration Techniques to Increase Viability and Vigor of Sweet Corn Seeds (Zea mays Sacharata L.)</a>
+    </p>
+    <p class="penulis">Aulia Zakia, Muhammad Bahrul Ulum, Aniek Iriany, Agus Zainudin</p>
+    <p class="wadah"><em>Agriprima: Journal of Applied Agricultural Sciences</em> 5(1): 50&ndash;60 &middot; DOI 10.25047/agriprima.v5i1.383</p>
+    <p class="ambil">
+      Di sinilah rumus <b>kecepatan tumbuh</b> ditulis paling jelas, sebagai
+      penjumlahan pertambahan kecambah dibagi etmalnya. Definisi keserempakan
+      tumbuhnya juga berbeda dari NAS-1 dan NAS-2 — memakai kecambah normal
+      kuat hari ke-5 dan ke-6. Perbedaan itu sendiri adalah pelajaran penting:
+      <b>definisi keserempakan tumbuh tidak tunggal</b>, jadi kalian wajib
+      menulis definisi mana yang kalian pakai.
+    </p>
+    <p class="rumus">DB  = (KN I + KN II) / jumlah benih x 100%
+KCT = N1/W1 + N2/W2 + ... + Nn/Wn      satuan %/etmal
+KST = KN kuat hari ke-5 dan ke-6 / benih diuji x 100%
+IV  = KN hari ke-4 / benih diuji x 100%</p>
+    <div class="tautan">
+      <a class="utama" href="https://agriprima.polije.ac.id/index.php/journal/article/download/v5i1-g/pdf/1811" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://doi.org/10.25047/agriprima.v5i1.383" target="_blank" rel="noopener noreferrer">DOI</a>
+      <a href="https://scholar.google.com/scholar?q=Modification+of+Invigoration+Techniques+Viability+Vigor+Sweet+Corn+Seeds+Zakia" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Zakia, A., Ulum, M.B., Iriany, A. dan Zainudin, A. (2021) &lsquo;Modification of invigoration techniques to increase viability and vigor of sweet corn seeds (Zea mays Sacharata L.)&rsquo;, <em>Agriprima</em>, 5(1), hlm. 50&ndash;60.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">NAS-4</span>
+      <span class="terbit">2024 &middot; Jurnal Agrotek Tropika</span>
+    </div>
+    <p class="judul">
+      <a href="https://jurnal.fp.unila.ac.id/index.php/JA/article/download/6134/5248" target="_blank" rel="noopener noreferrer">Hubungan Perkecambahan Benih dan Performa Bibit di Lapang pada Beberapa Varietas Terung Hibrida</a>
+    </p>
+    <p class="penulis">Kacung Hariyono, Talitha Nathaniel</p>
+    <p class="wadah"><em>Jurnal Agrotek Tropika</em> 12(1): 130&ndash;137</p>
+    <p class="ambil">
+      Menjawab pertanyaan yang akan ditanyakan penguji kepada kalian:
+      <b>apakah hasil uji di laboratorium benar-benar meramalkan pertumbuhan
+      di lapangan?</b> Makalah ini menghubungkan hasil uji perkecambahan
+      dengan performa bibit di lahan pada beberapa varietas. Pakai untuk
+      membenarkan mengapa daya berkecambah pantas diberi bobot terbesar
+      dalam skor mutu SIGMA.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://jurnal.fp.unila.ac.id/index.php/JA/article/download/6134/5248" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://scholar.google.com/scholar?q=Hubungan+Perkecambahan+Benih+dan+Performa+Bibit+di+Lapang+Terung+Hibrida" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Hariyono, K. dan Nathaniel, T. (2024) &lsquo;Hubungan perkecambahan benih dan performa bibit di lapang pada beberapa varietas terung hibrida&rsquo;, <em>Jurnal Agrotek Tropika</em>, 12(1), hlm. 130&ndash;137.</p>
+  </li>
+
+  <li class="entri">
+    <div class="kepala">
+      <span class="kode">NAS-5</span>
+      <span class="terbit">2023 &middot; JIM Agroekoteknologi</span>
+    </div>
+    <p class="judul">
+      <a href="https://ojs.unimal.ac.id/jimatek/article/download/12552/5237" target="_blank" rel="noopener noreferrer">Uji Perkecambahan Benih Kedelai (Glycine max L. Merril) pada Berbagai Media Kertas Menggunakan Alat Pengecambah Benih F&amp;F Manual Germinator</a>
+    </p>
+    <p class="penulis">Khairunnisyah Siregar, Faisal, Rd. Selvy Handayani, Muhammad Rafli, Ismadi</p>
+    <p class="wadah"><em>Jurnal Ilmiah Mahasiswa Agroekoteknologi</em> 2(2): 36&ndash;40</p>
+    <p class="ambil">
+      Yang paling langsung terpakai untuk pekerjaan lapangan kalian: pengaruh
+      <b>media kertas</b> terhadap hasil uji perkecambahan kedelai — dan
+      edamame adalah <em>Glycine max</em> yang sama. Bacalah sebelum menyusun
+      protokol UKDdP, supaya pilihan media kertas kalian punya alasan yang
+      bisa dikutip, bukan sekadar mengikuti kebiasaan.
+    </p>
+    <div class="tautan">
+      <a class="utama" href="https://ojs.unimal.ac.id/jimatek/article/download/12552/5237" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
+      <a href="https://scholar.google.com/scholar?q=Uji+Perkecambahan+Benih+Kedelai+Berbagai+Media+Kertas+Manual+Germinator" target="_blank" rel="noopener noreferrer">Cari judul</a>
+    </div>
+    <p class="sitasi">Siregar, K. <em>et al.</em> (2023) &lsquo;Uji perkecambahan benih kedelai (Glycine max L. Merril) pada berbagai media kertas menggunakan alat pengecambah benih F&amp;F manual germinator&rsquo;, <em>Jurnal Ilmiah Mahasiswa Agroekoteknologi</em>, 2(2), hlm. 36&ndash;40.</p>
+  </li>
+
+</ol>
+
+<h2 class="bagian">Ringkasan rumus</h2>
+<p class="bagian-ket">
+  Disarikan dari NAS-1, NAS-2, dan NAS-3. Perhatikan kolom terakhir: dua
+  parameter punya definisi yang berbeda antar sumber, jadi kalian harus
+  memilih dan menyebutkan pilihannya.
+</p>
+
+<div class="panel">
+  <div class="gulir">
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Rumus</th>
+          <th>Catatan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Daya berkecambah (DB)</td>
+          <td class="mono">(KN I + KN II) / N &times; 100%</td>
+          <td>Sama di ketiga sumber. KN = kecambah normal, N = jumlah benih diuji.</td>
+        </tr>
+        <tr>
+          <td>Indeks vigor (IV)</td>
+          <td class="mono">KN hitungan I / N &times; 100%</td>
+          <td>Sama di ketiga sumber, tetapi hari hitungan pertama berbeda antar komoditas.</td>
+        </tr>
+        <tr>
+          <td>Kecepatan tumbuh (K<sub>CT</sub>)</td>
+          <td class="mono">&Sigma; (N<sub>i</sub> / W<sub>i</sub>)</td>
+          <td>Butuh pengamatan harian. Dengan dua kali hitungan saja, yang bisa dihitung hanya pendekatan — sebutkan itu apa adanya.</td>
+        </tr>
+        <tr>
+          <td>Keserempakan tumbuh (KST)</td>
+          <td class="mono">KN hari antara / N &times; 100%</td>
+          <td><b>Definisinya tidak tunggal.</b> Hari ke-6 (NAS-1), rata-rata hari ke-10 dan ke-11 (NAS-2), atau kecambah normal kuat hari ke-5 dan ke-6 (NAS-3).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Cara memakai daftar ini untuk proposal</h3>
+  <p>
+    Bab 2 menuntut pembanding produk sejenis dan standar yang berlaku.
+    INT-3, INT-4, dan INT-5 adalah pembanding yang dapat diverifikasi —
+    jauh lebih kuat daripada dua nama produk tanpa sitasi yang ada di naskah
+    sekarang.
+  </p>
+  <p>
+    Bab 3 menuntut metode yang tepat. NAS-1 sampai NAS-3 memberi rumus yang
+    bisa kalian kutip langsung; INT-1 menjelaskan alasan di balik tiap rumus;
+    INT-2 menawarkan analisis yang lebih kuat kalau data kalian mencukupi.
+  </p>
+  <p>
+    Satu peringatan. Jangan menyalin daftar ini bulat-bulat ke Daftar Pustaka
+    tanpa membacanya. Pedoman menuntut setiap sumber yang tercantum benar-benar
+    disitasi di dalam teks, dan penguji akan menanyakan isinya.
+  </p>
+</div>
+
+<div class="panel">
+  <h3>Salin seluruh daftar pustaka</h3>
+  <p>
+    Format Harvard, urut abjad, siap ditempel ke proposal. Periksa lagi
+    terhadap gaya selingkung yang diminta sebelum dikirim.
+  </p>
+  <textarea id="semua-sitasi" readonly aria-label="Daftar pustaka seluruh entri dalam format Harvard">Dai, J. et al. (2025) 'SeedGerm-VIG: an open and comprehensive pipeline to quantify seed vigor in wheat and other cereal crops using deep learning-powered dynamic phenotypic analysis', GigaScience, 14, giaf129.
+
+Hariyono, K. dan Nathaniel, T. (2024) 'Hubungan perkecambahan benih dan performa bibit di lapang pada beberapa varietas terung hibrida', Jurnal Agrotek Tropika, 12(1), hlm. 130-137.
+
+McNair, J.N., Sunkara, A. dan Frobish, D. (2012) 'How to analyse seed germination data using statistical time-to-event analysis: non-parametric and semi-parametric methods', Seed Science Research, 22(2), hlm. 77-95.
+
+Medeiros, A.D. de et al. (2020) 'Machine learning for seed quality classification: an advanced approach using merger data from FT-NIR spectroscopy and X-ray imaging', Sensors, 20(15), 4319.
+
+Ranal, M.A. dan Santana, D.G. de (2006) 'How and why to measure the germination process?', Brazilian Journal of Botany, 29(1), hlm. 1-11.
+
+Siregar, K. et al. (2023) 'Uji perkecambahan benih kedelai (Glycine max L. Merril) pada berbagai media kertas menggunakan alat pengecambah benih F&F manual germinator', Jurnal Ilmiah Mahasiswa Agroekoteknologi, 2(2), hlm. 36-40.
+
+Tefa, A. (2017) 'Uji viabilitas dan vigor benih padi (Oryza sativa L.) selama penyimpanan pada tingkat kadar air yang berbeda', Savana Cendana, 2(3), hlm. 48-50.
+
+Yulyatin, A., Qadir, A., Ilyas, S. dan Udiarto, B.K. (2023) 'Pengaruh tingkat infeksi antraknosa (Colletotrichum capsici) terhadap viabilitas dan vigor benih tiga varietas cabai besar (Capsicum annuum L.)', Jurnal AGRO, 10(2), hlm. 217-230.
+
+Zakia, A., Ulum, M.B., Iriany, A. dan Zainudin, A. (2021) 'Modification of invigoration techniques to increase viability and vigor of sweet corn seeds (Zea mays Sacharata L.)', Agriprima: Journal of Applied Agricultural Sciences, 5(1), hlm. 50-60.
+
+Zhang, J. et al. (2023) 'Current optical sensing applications in seeds vigor determination', Agronomy, 13(4), 1167.</textarea>
+  <p style="margin-top:14px;">
+    <button class="salin" id="tombol-salin" type="button">Salin ke papan klip</button>
+    <span id="pesan-salin" role="status"></span>
+  </p>
+</div>
+
+<footer class="kaki">
+  Sepuluh berkas diperiksa satu per satu pada 1 September 2026. Tautan unduhan
+  bisa berubah sewaktu-waktu; kalau itu terjadi, pakai tautan DOI yang
+  permanen, atau tombol &ldquo;Cari judul&rdquo; yang membuka pencarian
+  berdasarkan judul persisnya.
+</footer>
+
+</div>
+
+<script>
+  (function () {
+    var tombol = document.getElementById("tombol-salin");
+    var kotak = document.getElementById("semua-sitasi");
+    var pesan = document.getElementById("pesan-salin");
+    if (!tombol || !kotak || !pesan) return;
+
+    function beritahu(teks) {
+      pesan.textContent = teks;
+      window.setTimeout(function () { pesan.textContent = ""; }, 4000);
+    }
+
+    tombol.addEventListener("click", function () {
+      var teks = kotak.value;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(teks).then(
+          function () { beritahu("Tersalin. Tempel ke Daftar Pustaka."); },
+          function () { pilihManual(); }
+        );
+      } else {
+        pilihManual();
+      }
+    });
+
+    function pilihManual() {
+      kotak.focus();
+      kotak.select();
+      var berhasil = false;
+      try { berhasil = document.execCommand("copy"); } catch (e) { berhasil = false; }
+      beritahu(
+        berhasil
+          ? "Tersalin. Tempel ke Daftar Pustaka."
+          : "Papan klip tidak tersedia di sini. Teksnya sudah disorot, tekan Ctrl+C."
+      );
+    }
+  })();
+</script>
+</body></html>

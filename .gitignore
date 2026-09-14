@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+dist/
+backend/sigma.db
+backend/storage/
+backend/models/
+backend/.env
+.DS_Store
+dist-tunggal/
+
+# Bahan yang sudah dipindahkan/digantikan (lihat isi _to_delete/) — bukan sumber
+_to_delete/
+
+# Snapshot zip lokal — dibuat ulang dari sumber, tidak di-commit
+*.zip
