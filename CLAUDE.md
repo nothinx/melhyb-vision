@@ -29,7 +29,7 @@ npm run lint             # oxlint
 npm run build            # tsc -b && vite build -> dist/ (dilayani FastAPI)
 npm run build:tunggal    # satu berkas HTML -> dist-tunggal/index.html
 
-docker compose up --build   # butuh frontend/dist sudah ada
+docker compose up --build   # frontend ikut di-build di dalam image
 ```
 
 Uji tidak memerlukan foto asli: `tests/make_fixture.py` membangkitkan lot benih
@@ -97,6 +97,11 @@ masuk **mode demo** dan menampilkan spanduk permanen. Konsekuensinya: setiap
 endpoint baru yang dipakai UI butuh data contoh di `lib/demo.ts`, kalau tidak
 build satu-berkas (`build:tunggal`) akan kosong di layar itu. `lib/types.ts`
 adalah cermin manual skema backend — perbarui bersama perubahan API.
+
+Tampilan khusus benih melon. Gerak memakai Motion (`motion/react`), anime.js
+(`PanggungIndeks`, `GridLot`), dan three.js (`RonggaBiji`, hero Beranda).
+Mode tanpa server sengaja kosong: tidak ada riwayat atau contoh hasil di
+`lib/demo.ts`, hanya data rujukan (varietas, metode, standar).
 
 Animasi (`lib/animasi.ts`, anime.js) hanya boleh menambah: tidak ada elemen
 yang disembunyikan lewat CSS lalu ditampilkan oleh JS, dan semuanya hormat pada

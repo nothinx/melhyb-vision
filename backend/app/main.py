@@ -92,7 +92,7 @@ def metodologi():
         },
         "batasan": [
             "Daya berkecambah, kecepatan tumbuh, dan keserempakan tumbuh "
-            "adalah ESTIMASI dari morfologi, bukan hasil pengukuran.",
+            "merupakan estimasi model dari ciri fisik, bukan hasil uji perkecambahan.",
             "Hasil aplikasi bukan pengganti sertifikasi benih resmi.",
             "Ukuran dalam milimeter hanya tersedia bila penanda skala ArUco "
             "ikut terfoto.",

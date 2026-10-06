@@ -43,48 +43,49 @@ def compute_indices(lot: LotFeatures) -> list[Index]:
     idx: list[Index] = []
 
     idx.append(Index(
-        "keseragaman_ukuran", "Keseragaman Ukuran",
+        "keseragaman_ukuran", "Keseragaman ukuran",
         _linmap(lot.area_cv, s.cv_area_worst, 0.0),
         "koefisien variasi luas proyeksi antar benih", lot.area_cv,
-        f"CV luas = {lot.area_cv:.3f} dari {lot.n_seeds} benih. CV 0 berarti "
-        f"seluruh benih berukuran sama (100); CV {s.cv_area_worst} atau lebih "
-        f"dinilai 0.",
+        f"Variasi luas {lot.n_seeds} benih (CV) = {lot.area_cv:.3f}. "
+        f"Semakin kecil variasinya, semakin seragam ukurannya. "
+        f"CV 0 mendapat indeks 100; CV {s.cv_area_worst} atau lebih mendapat 0.",
     ))
 
     idx.append(Index(
-        "keseragaman_warna", "Keseragaman Warna",
+        "keseragaman_warna", "Keseragaman warna",
         _linmap(lot.delta_e_mean, s.delta_e_worst, 0.0),
         "rerata jarak CIE76 tiap benih ke warna rata-rata lot",
         lot.delta_e_mean,
-        f"DeltaE rata-rata = {lot.delta_e_mean:.2f}. Semakin kecil, semakin "
-        f"seragam warnanya. DeltaE {s.delta_e_worst} atau lebih dinilai 0.",
+        f"Rerata perbedaan warna (DeltaE) = {lot.delta_e_mean:.2f}. "
+        f"Nilai yang lebih kecil menunjukkan warna yang lebih seragam. "
+        f"DeltaE {s.delta_e_worst} atau lebih mendapat indeks 0.",
     ))
 
     idx.append(Index(
-        "keutuhan_fisik", "Keutuhan Fisik",
+        "keutuhan_fisik", "Keutuhan fisik",
         _linmap(lot.solidity_mean, s.solidity_worst, s.solidity_best),
         "rerata solidity (luas benih / luas convex hull)", lot.solidity_mean,
-        f"Solidity rata-rata = {lot.solidity_mean:.3f}. Benih utuh mendekati "
-        f"{s.solidity_best}; benih pecah atau keriput turun karena lekukannya "
-        f"memperbesar convex hull.",
+        f"Rerata kepadatan bentuk (solidity) = {lot.solidity_mean:.3f}. "
+        f"Nilai mendekati {s.solidity_best} menunjukkan bentuk yang lebih utuh. "
+        f"Lekukan pada benih pecah atau keriput dapat menurunkan nilainya.",
     ))
 
     idx.append(Index(
-        "kebersihan_lot", "Bebas Cacat",
+        "kebersihan_lot", "Bebas cacat fisik",
         (1.0 - lot.defect_fraction) * 100.0,
         "proporsi benih dengan solidity di bawah ambang cacat",
         lot.defect_fraction,
-        f"{lot.defect_fraction * 100:.1f}% benih memiliki solidity di bawah "
-        f"{s.defect_solidity_threshold} dan ditandai cacat fisik.",
+        f"{lot.defect_fraction * 100:.1f}% benih ditandai memiliki cacat fisik "
+        f"karena kepadatan bentuknya (solidity) di bawah {s.defect_solidity_threshold}.",
     ))
 
     idx.append(Index(
-        "tekstur_permukaan", "Tekstur Permukaan",
+        "tekstur_permukaan", "Tekstur permukaan",
         _linmap(lot.glcm_homogeneity_mean, 0.20, 0.95),
         "homogenitas GLCM rata-rata", lot.glcm_homogeneity_mean,
-        f"Homogenitas GLCM = {lot.glcm_homogeneity_mean:.3f}. Permukaan halus "
-        f"dan bersih memberi nilai tinggi; permukaan berkerut atau berjamur "
-        f"menurunkannya.",
+        f"Keseragaman tekstur (homogenitas GLCM) = {lot.glcm_homogeneity_mean:.3f}. "
+        f"Nilai yang lebih tinggi menunjukkan tekstur yang lebih seragam "
+        f"pada foto. Indeks ini tidak memastikan ada atau tidaknya jamur.",
     ))
     return idx
 

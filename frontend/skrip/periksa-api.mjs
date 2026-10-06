@@ -19,17 +19,16 @@ function muat(nama, ambil) {
   return keluaran;
 }
 
-test("Server tidak tersedia: demo dilabeli, rincian yang tidak ada ditolak", async () => {
+test("Server tidak tersedia: kosong dan jujur, analisis ditolak", async () => {
   const modul = muat("api", async () => { throw new Error("Luring"); });
   const ringkasan = await modul.api.ringkasan();
   assert.equal(modul.modeSekarang(), "demo");
-  assert.equal(ringkasan.total, 18);
-  await assert.rejects(modul.api.detail(999), { status: 404 });
-  const melon = await modul.api.detail(17);
-  assert.equal(melon.id, 17);
-  assert.equal(melon.estimasi_fisiologis.length, 0);
-  assert.equal(melon.putusan.skor, null);
-  await assert.rejects(modul.api.analisis(null, "edamame"), { status: 422 });
+  assert.equal(ringkasan.total, 0);
+  assert.equal((await modul.api.riwayat()).length, 0);
+  assert.ok((await modul.api.kalibrasi()).every((m) => m.sampel_tersedia === 0 && !m.siap_pakai));
+  assert.equal((await modul.api.varietas()).length, 4);
+  await assert.rejects(modul.api.detail(1), { status: 404 });
+  await assert.rejects(modul.api.analisis(null, "melon", 1), { status: 503 });
 });
 
 test("Galat data server tidak diganti dengan angka contoh", async () => {
@@ -55,12 +54,8 @@ test("Rincian historis memakai identitas dan jumlah benih dari server", async ()
   assert.equal(hasil.estimasi_fisiologis.length, 0);
 });
 
-test("Semua estimasi contoh memenuhi minimum sampel dan validasi", () => {
+test("Mode tanpa server tidak membawa satu pun hasil contoh", () => {
   const contoh = muat("demo");
-  for (const hasil of Object.values(contoh.DEMO_HASIL_PER_ID)) {
-    for (const estimasi of hasil.estimasi_fisiologis) {
-      assert.ok(estimasi.n_sampel_kalibrasi >= 30);
-      assert.ok(estimasi.r2_validasi >= 0.3);
-    }
-  }
+  assert.equal(Object.keys(contoh.DEMO_HASIL_PER_ID).length, 0);
+  assert.equal(contoh.DEMO_RIWAYAT.length, 0);
 });

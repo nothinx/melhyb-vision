@@ -1,74 +1,31 @@
-import { KONTUR_LOT } from "../data/kontur-lot";
+/** Bentuk benih melon: tumpul di satu ujung, lancip di ujung lain. */
+export const JALUR_BENIH = "M2 12C2 7.6 6.4 5 11.5 5C16.4 5 20.6 8.2 22 12C20.6 15.8 16.4 19 11.5 19C6.4 19 2 16.4 2 12Z";
 
-/**
- * Aset gambar bawaan aplikasi — SVG sebaris, bukan berkas atau pustaka ikon.
- *
- * Dua alasan. Pertama, CSP-nya `default-src 'self'`: tidak ada CDN gambar,
- * dan menjadikannya SVG sebaris berarti warnanya ikut token tema lewat
- * `currentColor` — satu berkas PNG tidak bisa berganti warna saat tema
- * berganti. Kedua, bentuknya memang milik aplikasi ini: benih dan lingkaran
- * ukur, bukan metafora umum yang ditempelkan.
- */
-
-/** Lambang aplikasi: satu benih di dalam lingkaran ukur. */
+/** Lambang aplikasi: satu benih di dalam cincin ukur. */
 export function Lambang({ ukuran = 28 }: { ukuran?: number }) {
   return (
-    <svg
-      viewBox="0 0 28 28"
-      width={ukuran}
-      height={ukuran}
-      fill="none"
-      aria-hidden
-    >
-      <circle
-        cx="14" cy="14" r="9.5"
-        stroke="currentColor" strokeWidth="1.4" opacity=".55"
-      />
-      <ellipse
-        cx="14" cy="14" rx="6.2" ry="4.1"
-        transform="rotate(-24 14 14)" fill="currentColor"
-      />
-      <path
-        d="M11.6 15.4c1.6-2 3.4-3.1 5.6-3.6"
-        stroke="var(--accent)" strokeWidth="1.3" strokeLinecap="round"
-      />
+    <svg width={ukuran} height={ukuran} viewBox="0 0 32 32" aria-hidden fill="none">
+      <circle cx="16" cy="16" r="14.5" stroke="currentColor" strokeOpacity="0.35" />
+      <path d="M16 1.5v3M16 27.5v3M1.5 16h3M27.5 16h3" stroke="currentColor" strokeLinecap="round" />
+      <g transform="translate(4 4) rotate(-28 12 12)">
+        <path d={JALUR_BENIH} fill="var(--benih)" stroke="var(--benih-tepi)" strokeWidth="1" />
+        <path d="M5 12h12" stroke="var(--benih-tepi)" strokeOpacity="0.6" strokeWidth="0.8" strokeLinecap="round" />
+      </g>
     </svg>
   );
 }
 
-/**
- * Ilustrasi keadaan kosong: potongan lot yang sama dengan pembuka halaman —
- * kontur benih sungguhan dari `segment_seeds`, bukan elips karangan.
- *
- * Yang diperlihatkan persis keadaan yang sedang dijelaskan: benihnya ada dan
- * sudah terukur, yang belum ada hanya datanya. Sepuluh kontur cukup untuk
- * terbaca pada ukuran kecil; memakai keempat puluh enam akan jadi bubur.
- */
+/** Ilustrasi keadaan kosong: nampan dengan lubang benih yang belum terisi. */
 export function BenihKosong({ ukuran = 104 }: { ukuran?: number }) {
-  const potongan = KONTUR_LOT.slice(8, 18);
+  const posisi = [
+    [20, 30, -20], [46, 24, 12], [72, 32, -8], [30, 56, 25], [58, 52, -30], [84, 58, 10], [44, 78, -14], [70, 80, 22],
+  ];
   return (
-    <svg
-      viewBox="150 250 620 500"
-      width={ukuran}
-      height={(ukuran * 500) / 620}
-      aria-hidden
-      className="text-muted"
-    >
-      {potongan.map(({ d, cacat }, i) => (
-        <g key={i}>
-          <path
-            d={d}
-            fill={cacat ? "var(--estimasi)" : "currentColor"}
-            opacity={cacat ? 0.28 : 0.2}
-          />
-          <path
-            d={d}
-            fill="none"
-            stroke={cacat ? "var(--estimasi)" : "var(--accent)"}
-            strokeWidth={cacat ? 5 : 3.6}
-            opacity={cacat ? 0.9 : 0.55}
-            strokeLinejoin="round"
-          />
+    <svg width={ukuran} height={ukuran * 0.85} viewBox="0 0 104 92" aria-hidden fill="none">
+      <rect x="4" y="6" width="96" height="82" rx="16" stroke="var(--line)" strokeWidth="1.5" />
+      {posisi.map(([x, y, r], i) => (
+        <g key={i} transform={`translate(${x - 9} ${y - 6}) rotate(${r} 9 6) scale(0.75)`}>
+          <path d={JALUR_BENIH} stroke="var(--garis-kontrol)" strokeDasharray="2.5 2.5" strokeWidth="1.3" />
         </g>
       ))}
     </svg>

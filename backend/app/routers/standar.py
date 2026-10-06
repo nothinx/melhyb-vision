@@ -17,17 +17,15 @@ def daftar_standar():
             "variabel": "SIGMA_AMBANG_OVERRIDE",
             "contoh": "SIGMA_AMBANG_OVERRIDE=\"sorgum:80,melon:75\"",
             "penjelasan": (
-                "Satu-satunya cara menyalakan gerbang ambang edar: baca "
-                "dokumennya sendiri, lalu isi angkanya di sini. Statusnya "
-                "ditandai 'diisi_operator' dan setiap putusan menyebutnya, "
-                "jadi tidak pernah tertukar dengan angka yang terverifikasi."
+                "Pengelola server dapat mengisi ambang melalui "
+                "SIGMA_AMBANG_OVERRIDE setelah memeriksa dokumen acuan. "
+                "Nilainya akan berstatus diisi operator dan status tersebut "
+                "dicantumkan pada hasil analisis."
             ),
         },
         "catatan": (
-            "Angka berstatus 'belum_ada' tidak dipakai sama sekali oleh "
-            "sistem: gerbang ambang edar untuk komoditas itu dimatikan, "
-            "bukan diisi tebakan. Klaim yang beredar tetapi meragukan "
-            "dicatat terpisah beserta keberatannya, supaya jejak "
-            "penelusurannya tidak hilang tanpa ikut mempengaruhi penilaian."
+            "Ambang yang belum tersedia tidak digunakan untuk menilai "
+            "kelayakan edar. Angka dari sumber yang belum terverifikasi "
+            "dicatat sebagai informasi dan tidak ikut menentukan hasil."
         ),
     }

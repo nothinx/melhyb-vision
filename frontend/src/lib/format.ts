@@ -42,8 +42,8 @@ export function waktu(iso: string): string {
 }
 
 export function angka(n: number | null | undefined, desimal = 1): string {
-  if (n === null || n === undefined || Number.isNaN(n)) return "—";
-  return n.toFixed(desimal);
+  if (n === null || n === undefined || !Number.isFinite(n)) return "-";
+  return n.toLocaleString("id-ID", { minimumFractionDigits: desimal, maximumFractionDigits: desimal });
 }
 
 export function judulKunci(k: string): string {

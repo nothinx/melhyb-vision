@@ -29,8 +29,8 @@ export default function TrenIMF({ riwayat }: { riwayat: BarisRiwayat[] }) {
           ? "Butuh minimal dua analisis untuk menggambar tren."
           : undefined
       }
-      judul="Indeks Mutu Fisik dari waktu ke waktu"
-      keterangan="Hanya besaran terukur — tidak bergantung pada model kalibrasi, jadi bisa dibandingkan lintas komoditas sejak hari pertama."
+      judul="Tren mutu fisik"
+      keterangan="Perubahan indeks mutu fisik (IMF) berdasarkan tanggal analisis. Nilai dihitung dari foto tanpa menggunakan estimasi perkecambahan."
       legenda={
         <Legenda
           butir={komoditas.map((k) => ({
@@ -57,7 +57,7 @@ export default function TrenIMF({ riwayat }: { riwayat: BarisRiwayat[] }) {
                 <Td>{tanggal(String(d.tanggal))}</Td>
                 {komoditas.map((k) => (
                   <Td key={k} num>
-                    {d[k] !== undefined ? String(d[k]) : "—"}
+                    {d[k] !== undefined ? String(d[k]) : "-"}
                   </Td>
                 ))}
               </tr>

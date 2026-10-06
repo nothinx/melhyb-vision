@@ -31,7 +31,7 @@ export default function SebaranKelas({
           : undefined
       }
       judul="Sebaran kelas mutu"
-      keterangan={`${total} analisis. "Belum dapat dinilai" bukan kegagalan — itu lot yang komoditasnya belum punya model kalibrasi.`}
+      keterangan={`${total} analisis. Status "Belum dapat dinilai" berarti estimasi yang diperlukan untuk skor akhir belum layak digunakan.`}
       tabel={
         <TableWrap>
           <thead>

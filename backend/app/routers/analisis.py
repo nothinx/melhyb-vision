@@ -8,7 +8,7 @@ from sqlmodel import Session, select
 
 from ..config import settings
 from ..db import get_session
-from ..models import Analisis, Komoditas
+from ..models import Analisis, Komoditas, Varietas
 from ..services.pipeline import AnalysisRejected, run
 
 router = APIRouter(prefix="/api/analisis", tags=["analisis"])
@@ -35,6 +35,10 @@ async def analisis_baru(
                 .where(Komoditas.slug == komoditas.lower())).first()
     if not km:
         raise HTTPException(404, f"Komoditas '{komoditas}' belum terdaftar.")
+    if varietas_id is not None:
+        v = s.get(Varietas, varietas_id)
+        if not v or v.komoditas_id != km.id:
+            raise HTTPException(404, "Varietas tidak terdaftar untuk komoditas ini.")
 
     try:
         out = run(data, km.slug, marker_mm=penanda_mm)
@@ -57,7 +61,7 @@ async def analisis_baru(
         putusan=out.verdict.as_dict(),
     )
     s.add(row); s.commit(); s.refresh(row)
-    return {"id": row.id, **out.as_dict()}
+    return {"id": row.id, "varietas_id": row.varietas_id, **out.as_dict()}
 
 
 @router.get("")

@@ -1,188 +1,89 @@
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, Clock, TrendingUp } from "lucide-react";
-import Paritas from "../components/charts/Paritas";
-import {
-  Badge, Card, CardTitle, GalatData, Notice, Skeleton, StatTile, TableWrap, Td, Th,
-} from "../components/ui";
-import { api, modeSekarang } from "../lib/api";
-import { useReveal } from "../lib/animasi";
-import { DEMO_PARITAS } from "../lib/demo";
+import { CheckCircle2, Clock } from "lucide-react";
+import { Link } from "react-router";
+import { Muncul } from "../components/Gerak";
+import GridLot from "../components/GridLot";
+import { Badge, GalatData, Skeleton } from "../components/ui";
+import { api } from "../lib/api";
 import { angka } from "../lib/format";
 
-const MIN_SAMPEL = 30;
+const LANGKAH = [
+  ["Beri kode lot", "Tempel kode pada kemasan supaya foto dan hasil ujinya bisa dipasangkan."],
+  ["Foto lot", "Unggah lewat halaman Analisis dengan varietas yang benar."],
+  ["Uji perkecambahan", "Lakukan UKDdP pada benih dari lot yang sama, sesuai prosedur pengujian."],
+  ["Catat hasil", "Masukkan jumlah kecambah normal pada hitungan pertama dan akhir."],
+  ["Latih model", "Setelah syarat jumlah lot terpenuhi, pengelola data melatih dan memvalidasi model."],
+] as const;
 
 export default function Kalibrasi() {
-  const wadah = useReveal<HTMLDivElement>();
-  const q = useQuery({ queryKey: ["kalibrasi"], queryFn: api.kalibrasi });
+  const status = useQuery({ queryKey: ["kalibrasi"], queryFn: api.kalibrasi });
+  const metodologi = useQuery({ queryKey: ["metodologi"], queryFn: api.metodologi });
 
-  const utama = q.data?.find(
-    (k) => k.komoditas === "sorgum" && k.target === "daya_berkecambah",
-  );
-  const siap = q.data?.filter((k) => k.siap_pakai).length ?? 0;
-
-  if (q.isError) return <GalatData ulang={() => q.refetch()} />;
-  if (q.isPending) return <Skeleton tinggi={400} />;
+  if (status.isError || metodologi.isError) return <GalatData ulang={() => { void status.refetch(); void metodologi.refetch(); }} />;
+  if (status.isPending || metodologi.isPending) return <Skeleton tinggi={420} />;
+  const syarat = Number(metodologi.data.syarat_kalibrasi.sampel_minimum);
+  const r2Min = Number(metodologi.data.syarat_kalibrasi.r2_validasi_minimum);
+  const melon = status.data.filter((m) => m.komoditas === "melon");
 
   return (
-    <div ref={wadah} className="grid min-w-0 gap-5">
-      <header className="reveal max-w-[42rem]">
-        <p className="eyebrow mb-2 text-accent">Kalibrasi</p>
-        <h1 className="display m-0 judul-halaman text-ink">
-          Sebuah foto tidak memuat daya berkecambah
-        </h1>
-        <p className="mt-3 text-sedang leading-relaxed text-ink-2">
-          Yang bisa dibangun adalah model yang memetakan morfologi ke hasil
-          UKDdP, lalu melaporkan seberapa jauh model itu meleset. Halaman ini
-          mencatat hasil validasi serta model yang belum layak dipakai.
+    <div className="grid gap-20">
+      <Muncul as="header" className="max-w-[860px]">
+        <h1 className="display m-0 text-[clamp(2.4rem,5.4vw,4.4rem)] text-ink">Kalibrasi model melon.</h1>
+        <p className="mt-6 mb-0 max-w-[60ch] text-sedang text-ink-2">
+          Model menghubungkan ciri fisik dari foto dengan hasil uji perkecambahan lot yang sama. Selama syaratnya belum terpenuhi, estimasi tidak ditampilkan sama sekali.
         </p>
-      </header>
+      </Muncul>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <StatTile
-          urutan={0}
-          label="Model siap pakai"
-          nilai={`${siap}/${q.data?.length ?? 0}`}
-          catatan="lolos ambang sampel dan R²"
-        />
-        <StatTile
-          urutan={1}
-          label="Sampel sorgum"
-          nilai={utama?.sampel_tersedia ?? "Belum ada"}
-          catatan={`ambang minimum ${MIN_SAMPEL} pasangan`}
-        />
-        <StatTile
-          urutan={2}
-          label="MAE daya berkecambah"
-          nilai={angka(utama?.laporan?.mae ?? null, 2)}
-          satuan="%"
-          catatan={`R² ${angka(utama?.laporan?.r2 ?? null, 3)}`}
-        />
-      </div>
+      <section aria-label="Status model per estimasi" className="grid gap-4 lg:grid-cols-3">
+        {melon.map((m, i) => {
+          const kurang = Math.max(0, syarat - m.sampel_tersedia);
+          return (
+            <Muncul key={m.target} jeda={i * 0.08} className="kartu flex flex-col gap-6 p-7">
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="display-kecil m-0 text-judul-kecil text-ink">{m.label_target.replace(/ \(.*\)/, "")}</h2>
+                <Badge nada={m.siap_pakai ? "good" : "netral"} ikon={m.siap_pakai ? <CheckCircle2 size={13} /> : <Clock size={13} />}>
+                  {m.siap_pakai ? "Siap" : "Belum siap"}
+                </Badge>
+              </div>
+              <GridLot terisi={m.sampel_tersedia} syarat={syarat} label="Lot berpasangan" />
+              <dl className="m-0 grid grid-cols-2 gap-4 border-t border-line pt-5">
+                <div><dt className="eyebrow text-muted">MAE validasi</dt><dd className="mono tnum mt-1 mb-0 text-sedang text-ink">{angka(m.laporan?.mae, 2)}</dd></div>
+                <div><dt className="eyebrow text-muted">R² validasi</dt><dd className="mono tnum mt-1 mb-0 text-sedang text-ink">{angka(m.laporan?.r2, 3)}</dd></div>
+              </dl>
+              <p className="m-0 text-kecil text-muted">
+                {m.laporan?.reason ?? (kurang > 0 ? `Kurang ${kurang} lot berpasangan sebelum model bisa dilatih.` : "Siap dilatih oleh pengelola data.")}
+              </p>
+            </Muncul>
+          );
+        })}
+      </section>
 
-      <Card>
-        {q.isLoading ? (
-          <Skeleton tinggi={280} />
-        ) : modeSekarang() !== "demo" ? (
-          <Notice>Pasangan prediksi dan hasil UKDdP belum tersedia untuk grafik. Metrik model yang tersedia ditampilkan di tabel status.</Notice>
-        ) : (
-          <Paritas
-            data={utama?.siap_pakai ? DEMO_PARITAS : []}
-            mae={utama?.laporan?.mae ?? 0}
-            r2={utama?.laporan?.r2 ?? 0}
-          />
-        )}
-      </Card>
-
-      <Card>
-        <CardTitle keterangan="Satu baris per pasangan komoditas dan target. Yang belum siap tetap ditampilkan — justru itu informasinya.">
-          Status model
-        </CardTitle>
-        {q.isLoading ? (
-          <Skeleton tinggi={200} />
-        ) : (
-          <TableWrap>
-            <thead>
-              <tr>
-                <Th>Komoditas</Th>
-                <Th>Target</Th>
-                <Th align="right">Sampel</Th>
-                <Th align="right">MAE</Th>
-                <Th align="right">R²</Th>
-                <Th>Status</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {q.data?.map((k) => {
-                const kurang = Math.max(0, MIN_SAMPEL - k.sampel_tersedia);
-                return (
-                  <tr key={`${k.komoditas}-${k.target}`}>
-                    <Td className="font-medium text-ink">{k.komoditas}</Td>
-                    <Td>{k.label_target}</Td>
-                    <Td num>
-                      {k.sampel_tersedia}
-                      {kurang > 0 && (
-                        <span className="ml-1 text-mikro text-muted">
-                          (−{kurang})
-                        </span>
-                      )}
-                    </Td>
-                    <Td num>
-                      {k.laporan && Number.isFinite(k.laporan.mae)
-                        ? k.laporan.mae.toFixed(2)
-                        : "—"}
-                    </Td>
-                    <Td num>
-                      {k.laporan && Number.isFinite(k.laporan.r2)
-                        ? k.laporan.r2.toFixed(3)
-                        : "—"}
-                    </Td>
-                    <Td>
-                      {k.siap_pakai ? (
-                        <Badge nada="good" ikon={<CheckCircle2 size={12} />}>
-                          Dipakai
-                        </Badge>
-                      ) : (
-                        <Badge nada="warning" ikon={<Clock size={12} />}>
-                          Belum
-                        </Badge>
-                      )}
-                    </Td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </TableWrap>
-        )}
-      </Card>
-
-      <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-        <Card>
-          <CardTitle>Syarat sebelum sebuah model boleh dipakai</CardTitle>
-          <ul className="m-0 grid list-none gap-3 p-0">
-            {[
-              ["Minimal 30 pasangan berlabel", "Satu pasangan = satu lot yang difoto lalu ditanam dan diuji UKDdP. Di bawah 30, model tidak menyajikan prediksi sama sekali."],
-              ["R² validasi silang ≥ 0,30", "Diukur dengan validasi silang 5-lipat, bukan pada data latihnya sendiri. Model tanpa hubungan nyata otomatis ditolak."],
-              ["Selang prediksi wajib", "Setiap estimasi keluar bersama nilai ± 1,96 × RMSE, jadi ketidakpastiannya ikut terlihat."],
-              ["Penjaga ekstrapolasi", "Lot yang cirinya jauh di luar rentang data latih ditandai dan dikeluarkan dari putusan kelas."],
-            ].map(([judul, isi]) => (
-              <li key={judul} className="rounded-md bg-surface-2 p-3.5">
-                <div className="mb-1 text-dasar font-semibold text-ink">
-                  {judul}
+      <section className="grid gap-12 lg:grid-cols-[1fr_1.3fr]">
+        <Muncul>
+          <h2 className="display m-0 text-[clamp(1.8rem,3.4vw,2.6rem)] text-ink">Kapan estimasi boleh tampil.</h2>
+          <dl className="daftar-penjelasan mt-8">
+            <div><dt>Minimal {syarat} lot berpasangan</dt><dd>Setiap lot punya foto dan hasil uji perkecambahan (UKDdP).</dd></div>
+            <div><dt>R² validasi silang ≥ {angka(r2Min, 2)}</dt><dd>Diuji dengan validasi silang 5 lipatan. Model yang lebih lemah tidak dipakai.</dd></div>
+            <div><dt>Rentang selalu ikut tampil</dt><dd>Estimasi disertai selang nilai, bukan satu angka pasti.</dd></div>
+            <div><dt>Lot di luar rentang ditandai</dt><dd>Kalau ciri lot jauh dari data pelatihan, estimasinya tidak ikut menentukan kelas mutu.</dd></div>
+          </dl>
+          <Link to="/metodologi" className="tautan-teks mt-4">Rincian metode</Link>
+        </Muncul>
+        <Muncul jeda={0.08}>
+          <ol className="relative m-0 grid list-none gap-0 p-0">
+            {LANGKAH.map(([judul, isi], i) => (
+              <li key={judul} className="relative grid grid-cols-[48px_1fr] gap-4 pb-8 last:pb-0">
+                {i < LANGKAH.length - 1 && <span aria-hidden className="absolute top-12 bottom-0 left-[23px] w-px bg-line" />}
+                <span className="mono grid size-12 place-items-center rounded-full border border-line bg-surface text-kecil text-ink">{String(i + 1).padStart(2, "0")}</span>
+                <div className="pt-2.5">
+                  <h3 className="m-0 text-sedang font-semibold text-ink">{judul}</h3>
+                  <p className="mt-1 mb-0 text-dasar text-muted">{isi}</p>
                 </div>
-                <p className="m-0 text-kecil leading-relaxed text-muted">
-                  {isi}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
-        <Card>
-          <CardTitle>Alur mengumpulkan data kalibrasi</CardTitle>
-          <ol className="m-0 grid list-none gap-2.5 p-0">
-            {[
-              "Siapkan kode lot untuk menghubungkan foto dan hasil uji.",
-              "Foto lot itu di tab Analisis. Pencatatan batch saat ini dilakukan melalui pengelola data.",
-              "Tanam lot yang sama, jalankan UKDdP 1–3 minggu.",
-              "Catat hasilnya; daya berkecambah dihitung sistem dengan rumus DB = (A + B) / N × 100.",
-              "Setelah 30 pasangan terkumpul, latih modelnya dan baca metrik validasinya di sini.",
-            ].map((t, i) => (
-              <li key={t} className="flex gap-2.5">
-                <span className="tnum mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-accent-soft text-mikro font-bold text-ukur">
-                  {i + 1}
-                </span>
-                <span className="text-dasar leading-relaxed text-ink-2">{t}</span>
               </li>
             ))}
           </ol>
-          <div className="mt-4">
-            <Notice nada="info" ikon={<TrendingUp size={15} />}>
-              Satu komoditas yang tervalidasi penuh jauh lebih meyakinkan
-              daripada tiga yang setengah jadi. Selesaikan sorgum lebih dulu.
-            </Notice>
-          </div>
-        </Card>
-      </div>
+        </Muncul>
+      </section>
     </div>
   );
 }

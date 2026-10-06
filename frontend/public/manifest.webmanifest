@@ -1,14 +1,14 @@
 {
-  "name": "SIGMA — Penilaian Mutu Benih",
+  "name": "SIGMA | Penilaian mutu benih",
   "short_name": "SIGMA",
-  "description": "Penilaian mutu fisik lot benih dari citra, dengan pemisahan tegas antara besaran terukur dan besaran terestimasi.",
+  "description": "Analisis mutu fisik lot benih dari foto, dengan estimasi perkecambahan setelah model lolos validasi.",
   "lang": "id",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f2f4ec",
-  "theme_color": "#f2f4ec",
+  "background_color": "#f3f6f3",
+  "theme_color": "#f3f6f3",
   "icons": [
     { "src": "/ikon.svg", "sizes": "any", "type": "image/svg+xml" },
     { "src": "/ikon-192.png", "sizes": "192x192", "type": "image/png" },

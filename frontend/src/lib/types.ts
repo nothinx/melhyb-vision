@@ -64,6 +64,15 @@ export interface Komoditas {
   sumber_ambang: string;
 }
 
+export interface Varietas {
+  id: number;
+  komoditas_id: number;
+  nama: string;
+  deskripsi: string;
+  pemulia: string;
+  no_pendaftaran: string;
+}
+
 export interface Indeks {
   kunci: string;
   label: string;
@@ -144,6 +153,7 @@ export interface GerbangCitra {
 
 export interface HasilAnalisis {
   id: number;
+  varietas_id?: number | null;
   /** Kosong untuk analisis lama: gerbang disimpan, dimensi piksel tidak. */
   gerbang_citra?: GerbangCitra;
   skala: Skala;
@@ -162,6 +172,7 @@ export interface HasilAnalisis {
 export interface BarisRiwayat {
   id: number;
   komoditas_slug: string;
+  varietas_id: number | null;
   n_benih: number;
   indeks_mutu_fisik: number;
   skor_akhir: number | null;

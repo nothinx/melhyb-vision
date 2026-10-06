@@ -17,7 +17,16 @@ def test_metodologi_terbuka(client):
 
 def test_komoditas_awal_terisi(client):
     slugs = {k["slug"] for k in client.get("/api/katalog/komoditas").json()}
-    assert {"sorgum", "melon", "edamame"} <= slugs
+    assert slugs == {"melon"}
+    nama = {v["nama"] for v in client.get("/api/katalog/varietas").json()}
+    assert {"Golden Aroma", "Honey Globe", "Apollo", "Benih petani"} <= nama
+
+
+def test_varietas_komoditas_lain_ditolak(client, lot_bagus):
+    r = client.post("/api/analisis",
+                    files={"berkas": ("lot.jpg", lot_bagus, "image/jpeg")},
+                    data={"komoditas": "melon", "varietas_id": 9999})
+    assert r.status_code == 404
 
 
 def test_komoditas_tak_dikenal_ditolak(client, lot_bagus):
@@ -30,7 +39,7 @@ def test_komoditas_tak_dikenal_ditolak(client, lot_bagus):
 def test_foto_buram_ditolak_dengan_panduan(client, lot_buram):
     r = client.post("/api/analisis",
                     files={"berkas": ("lot.jpg", lot_buram, "image/jpeg")},
-                    data={"komoditas": "sorgum"})
+                    data={"komoditas": "melon"})
     assert r.status_code == 422
     detail = r.json()["detail"]
     assert any(m["kode"] == "buram" for m in detail["gerbang_citra"]["masalah"])
@@ -39,14 +48,14 @@ def test_foto_buram_ditolak_dengan_panduan(client, lot_buram):
 def test_berkas_bukan_citra_ditolak(client):
     r = client.post("/api/analisis",
                     files={"berkas": ("catatan.txt", b"bukan gambar", "text/plain")},
-                    data={"komoditas": "sorgum"})
+                    data={"komoditas": "melon"})
     assert r.status_code == 400
 
 
 def test_analisis_tanpa_kalibrasi_tidak_mengarang_angka(client, lot_bagus):
     r = client.post("/api/analisis",
                     files={"berkas": ("lot.jpg", lot_bagus, "image/jpeg")},
-                    data={"komoditas": "sorgum"})
+                    data={"komoditas": "melon"})
     assert r.status_code == 201
     body = r.json()
     assert body["indeks_mutu_fisik"] > 0
@@ -60,7 +69,7 @@ def test_analisis_tanpa_kalibrasi_tidak_mengarang_angka(client, lot_bagus):
 def test_citra_anotasi_dapat_diunduh(client, lot_bagus):
     aid = client.post("/api/analisis",
                       files={"berkas": ("lot.jpg", lot_bagus, "image/jpeg")},
-                      data={"komoditas": "sorgum"}).json()["id"]
+                      data={"komoditas": "melon"}).json()["id"]
     r = client.get(f"/api/analisis/{aid}/citra?anotasi=true")
     assert r.status_code == 200
     assert r.headers["content-type"] == "image/jpeg"
@@ -71,7 +80,7 @@ def test_ringkasan_mengagregasi(client):
     s = client.get("/api/analisis/ringkasan").json()
     assert s["total"] >= 2
     assert s["imf_rata2"] is not None
-    assert any(p["komoditas"] == "sorgum" for p in s["per_komoditas"])
+    assert any(p["komoditas"] == "melon" for p in s["per_komoditas"])
 
 
 def test_ekspor_csv(client):
@@ -109,9 +118,9 @@ def test_ukddp_menolak_total_melebihi_n(client):
 
 def test_status_kalibrasi_jujur_saat_kosong(client):
     rows = client.get("/api/kalibrasi/status").json()
-    sorgum_db = [r for r in rows if r["komoditas"] == "sorgum"
-                 and r["target"] == "daya_berkecambah"][0]
-    assert sorgum_db["siap_pakai"] is False
+    melon_db = [r for r in rows if r["komoditas"] == "melon"
+                and r["target"] == "daya_berkecambah"][0]
+    assert melon_db["siap_pakai"] is False
 
 
 def test_latih_tanpa_pasangan_ditolak(client):
@@ -130,11 +139,11 @@ def test_loop_kalibrasi_penuh(client, lot_bagus, lot_buruk):
         bagus = i % 2 == 0
         blob = lot_bagus if bagus else lot_buruk
         batch = client.post("/api/batch", json={
-            "kode": f"KAL-{i:03d}", "komoditas_id": 3}).json()
+            "kode": f"KAL-{i:03d}", "komoditas_id": 1}).json()
         aid = client.post(
             "/api/analisis",
             files={"berkas": (f"{i}.jpg", blob, "image/jpeg")},
-            data={"komoditas": "edamame", "batch_id": batch["id"]},
+            data={"komoditas": "melon", "batch_id": batch["id"]},
         ).json()["id"]
         normal1 = 88 if bagus else 44
         normal2 = 6 if bagus else 8
@@ -148,7 +157,7 @@ def test_loop_kalibrasi_penuh(client, lot_bagus, lot_buruk):
             "abnormal": 2, "tidak_tumbuh": 100 - normal1 - normal2 - 2,
         })
 
-    rep = client.post("/api/kalibrasi/latih?komoditas=edamame").json()
+    rep = client.post("/api/kalibrasi/latih?komoditas=melon").json()
     assert rep["n_samples"] >= settings.min_calibration_samples
     assert rep["usable"] is True, rep["reason"]
 
@@ -156,7 +165,7 @@ def test_loop_kalibrasi_penuh(client, lot_bagus, lot_buruk):
     body = client.post(
         "/api/analisis",
         files={"berkas": ("baru.jpg", lot_bagus, "image/jpeg")},
-        data={"komoditas": "edamame"}).json()
+        data={"komoditas": "melon"}).json()
     est = body["estimasi_fisiologis"]
     assert est, body["putusan"]
     db = [e for e in est if e["target"] == "daya_berkecambah"][0]
@@ -168,7 +177,7 @@ def test_loop_kalibrasi_penuh(client, lot_bagus, lot_buruk):
 def test_hapus_analisis(client, lot_bagus):
     aid = client.post("/api/analisis",
                       files={"berkas": ("x.jpg", lot_bagus, "image/jpeg")},
-                      data={"komoditas": "sorgum"}).json()["id"]
+                      data={"komoditas": "melon"}).json()["id"]
     assert client.delete(f"/api/analisis/{aid}").status_code == 204
     assert client.get(f"/api/analisis/{aid}").status_code == 404
 

@@ -1,0 +1,10 @@
+**/node_modules
+**/__pycache__
+frontend/dist
+frontend/dist-tunggal
+backend/sigma.db
+backend/storage
+backend/models
+backend/.env
+_to_delete
+*.zip

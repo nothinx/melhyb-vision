@@ -58,7 +58,7 @@ def decode_image(data: bytes) -> np.ndarray:
     buf = np.frombuffer(data, dtype=np.uint8)
     img = cv2.imdecode(buf, cv2.IMREAD_COLOR)
     if img is None:
-        raise ValueError("Berkas tidak dapat dibaca sebagai citra.")
+        raise ValueError("Foto tidak dapat dibaca. Pilih berkas JPG atau PNG yang valid.")
     return img
 
 
@@ -96,8 +96,8 @@ def check_image(img: np.ndarray) -> ImageGate:
     if blown > settings.max_blown_fraction:
         issues.append(GateIssue(
             "terlalu_terang",
-            "Terlalu banyak bagian foto yang putih jenuh sehingga detail benih "
-            "hilang. Hindari cahaya matahari langsung dan pantulan.",
+            "Foto terlalu terang sehingga sebagian detail benih hilang. "
+            "Kurangi cahaya, hindari pantulan, lalu ambil foto ulang.",
             blown, settings.max_blown_fraction))
     if dyn < settings.min_dynamic_range:
         issues.append(GateIssue(

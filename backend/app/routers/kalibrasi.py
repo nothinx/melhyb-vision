@@ -102,7 +102,7 @@ def status(s: Session = Depends(get_session)):
     """Apa yang sudah dan belum terkalibrasi - ditampilkan terbuka di UI."""
     out = []
     komoditas = {a.komoditas_slug for a in s.exec(select(Analisis)).all()}
-    for slug in sorted(komoditas | {"sorgum", "melon", "edamame"}):
+    for slug in sorted(komoditas | {"melon"}):
         for target in calibration.TARGETS:
             X, _ = _pairs(s, slug, target)
             report = calibration.load_report(slug, target)

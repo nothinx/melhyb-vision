@@ -80,9 +80,9 @@ def train(komoditas: str, target: str, X: list[list[float]],
         report = CalibrationReport(
             komoditas, target, n, Xa.shape[1] if n else 0, 0,
             float("nan"), float("nan"), float("nan"), False,
-            (f"Baru {n} sampel berlabel. Dibutuhkan minimal "
-             f"{settings.min_calibration_samples} pasangan (citra, hasil UKDdP) "
-             f"sebelum model boleh menyajikan prediksi."),
+            (f"Tersedia {n} lot dengan foto dan hasil uji perkecambahan. "
+             f"Model memerlukan minimal {settings.min_calibration_samples} "
+             f"lot sebelum dapat memberikan estimasi."),
             now)
         _report_path(komoditas, target).write_text(
             json.dumps(report.as_dict(), indent=2), encoding="utf-8")
@@ -148,9 +148,9 @@ class Estimate:
         return not self.out_of_domain
 
     def as_dict(self) -> dict:
-        catatan = ("Angka ini adalah ESTIMASI dari citra, bukan hasil "
-                   "pengukuran. Untuk keputusan resmi, lakukan uji "
-                   "perkecambahan.")
+        catatan = ("Nilai ini merupakan estimasi model dari foto, bukan hasil "
+                   "uji perkecambahan. Keputusan resmi tetap memerlukan "
+                   "pengujian benih.")
         if self.out_of_domain:
             catatan = (
                 f"Ciri lot ini berada di luar rentang data kalibrasi "

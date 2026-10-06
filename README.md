@@ -30,34 +30,30 @@ dilaporkan hanya Indeks Mutu Fisik, beserta alasan mengapa sisanya kosong.
 | Gaya | Tailwind CSS v4 | token semantik, mode terang & gelap dari satu sumber |
 | Rute | React Router (hash) | hasil build bisa dibuka dari mana saja tanpa konfigurasi server |
 | Data | TanStack Query | cache, status muat, dan mode demo di satu lapisan |
-| Gerak halaman | Motion | transisi rute dan indikator tab |
-| Gerak elemen | anime.js v4 | kanvas pembuka, angka yang naik dari nol, bar yang tumbuh, reveal berurutan |
+| Gerak elemen | anime.js v4 | perubahan susunan ilustrasi benih melon setelah tindakan pengguna |
 | Grafik | Recharts | grafik paritas, tren, dan sebaran kelas |
 | Ikon | Lucide | satu keluarga ikon di seluruh aplikasi |
 
 ### Identitas visual
 
-Rujukannya dua benda nyata di meja pengujian benih, bukan aplikasi pertanian
-generik: **kertas blotter** tempat benih dikecambahkan (hangat, sedikit
-kehijauan, berbutir) untuk mode terang, dan **panel instrumen laboratorium**
-(gelap, presisi, angka monospasi) untuk mode gelap. Aksennya viridian dengan
-tunas sebagai warna kedua dan amber benih untuk besaran terestimasi.
+Desain memakai latar abu-abu kehijauan, aksen hijau, serta kaca buram pada
+navigasi dan panel pembuka. Panel data memakai permukaan lebih padat agar
+angka mudah dibaca. Amber menandai estimasi atau status yang perlu diperiksa.
+Tema terang dan gelap tersedia melalui tombol tema. Arah desain lengkap ada
+di `DESIGN.md`.
 
-Tipografi memakai tiga peran: **Fraunces** untuk judul (sumbu `opsz` tinggi
-dan sedikit `WONK`, memberi kesan huruf cetak bungkus benih), **Archivo**
-untuk antarmuka dan teks, **IBM Plex Mono** untuk angka dan label data.
+**Archivo** dipakai untuk judul dan antarmuka; **IBM Plex Mono** untuk rincian
+teknis. Font tetap diswakelola agar tersedia pada laporan tanpa jaringan.
+Angka memakai format Indonesia dan langsung menampilkan nilai akhirnya.
 
-Kanvas pembuka di halaman Ringkasan bukan hiasan: benih tersebar acak lalu
-tertata rapi dan sebagian dilingkari kontur pengukuran — persis yang
-dikerjakan aplikasi pada setiap foto. Seluruh gerakan hormat pada
-`prefers-reduced-motion`, dan tidak ada satu pun elemen yang disembunyikan
-lewat CSS: animasi hanya boleh menambah, sehingga isi halaman tetap terbaca
-kalau JavaScript-nya gagal.
+Panel pembuka menunjukkan contoh kontur hasil segmentasi citra benih
+sintetis, dengan label yang menyebut asal contohnya. Ilustrasi 3D tersedia di
+halaman Studi benih melon dan dimuat saat halaman itu dibuka. Gerakan susunan
+ilustrasi mengikuti tindakan pengguna dan `prefers-reduced-motion`.
 
-Palet grafiknya bukan pilihan selera: tiga warna deret divalidasi terhadap
-simulasi buta warna (ΔE CVD terburuk 9,2 terang / 9,4 gelap) pada kedua latar,
-setiap grafik punya legenda, label langsung, dan tampilan tabel sebagai
-alternatif.
+Grafik memakai warna deret yang terpisah dari warna merek, disertai legenda
+atau label langsung. Setiap grafik menyediakan tampilan tabel sebagai
+alternatif membaca data.
 
 ## Menjalankan
 
@@ -74,6 +70,7 @@ docker compose up --build
 ```bash
 ./jalankan.sh          # Linux / macOS
 .\jalankan.ps1         # Windows PowerShell
+jalankan.bat           # Windows, klik dua kali: satu server di http://localhost:8001
 ```
 
 Backend di `http://localhost:8000` (dokumentasi API otomatis di `/docs`),
@@ -97,12 +94,26 @@ demo di komputer yang tidak menjalankan apa pun.
 ```bash
 cd backend
 pip install -r requirements-dev.txt
-pytest -q                     # 43 uji, tanpa perlu foto asli
+pytest -q                     # 48 uji, tanpa perlu foto asli
 ```
 
 Berkas uji memakai citra benih sintetis yang dibangkitkan
 `tests/make_fixture.py`, sehingga seluruh pipeline bisa diuji tanpa data
 lapangan.
+
+Pemeriksaan frontend dijalankan dari `frontend/`:
+
+```bash
+npm run lint              # lint dan kontras tema, termasuk permukaan kaca
+npm run periksa:api       # mode demo, respons API, dan batas kelayakan contoh
+npm run periksa:halaman   # render halaman, kondisi data, dan pemisahan estimasi
+npm run build
+npm run build:tunggal
+```
+
+Pemeriksaan render tidak menggantikan pemeriksaan visual dan interaksi di
+browser. Hasil serta batas verifikasi perombakan dicatat di
+`LAPORAN-PEROMBAKAN.md`.
 
 ## Alur kerja yang sebenarnya
 

@@ -1,44 +1,27 @@
-# SIGMA: meja inspeksi benih
+# Arah desain SIGMA Benih
 
-Untuk operator pengujian benih: memulai analisis lot, membaca mutu fisik,
-dan mengetahui kapan estimasi belum dapat digunakan.
+Arahan pengguna: modern, minimalis, glass style, rapi, dengan bahasa Indonesia
+yang lebih natural. Pemeriksaan antislop diterapkan selama pengerjaan.
 
-## Acuan penghargaan 2026
-
-- [100 Lost Species](https://www.cssdesignawards.com/wotm/100-lost-species/49386/),
-  CSS Design Awards Website of the Month Juli 2026. Acuan: spesimen menjadi
-  pusat perhatian, nama objek dan informasi pendamping mendapat ruang sendiri.
-- [The State of the Gallery](https://www.cssdesignawards.com/sites/the-state-of-the-gallery/50016/),
-  CSS Design Awards Website of the Day 9 September 2026. Acuan: objek WebGL
-  terhubung dengan informasi yang sedang dibaca.
-
-Tanggal dan kategori diperiksa pada 11 September 2026. Gambar presentasi pada
-halaman penghargaan diperiksa secara visual. Ini acuan komposisi, bukan aset
-untuk disalin. Referensi sebelum 2026 tidak digunakan.
-
-## Keputusan visual
-
-- ENERGY 2 / RHYTHM 3 / MOTION 2.
-- Warna: kertas blotter dan hijau laboratorium meneruskan identitas README;
-  amber hanya untuk spesimen dan status estimasi.
-- Tipografi: Fraunces untuk identitas botani, Archivo untuk kerja operator,
-  IBM Plex Mono untuk angka. Font lokal tetap berfungsi tanpa jaringan.
-- Pembuka: judul pendek, tindakan analisis, dan satu area spesimen. Grafik
-  lengkap berada di Riwayat sehingga pembuka tidak menjadi tumpukan dashboard.
-- Informasi: daftar lot dan kesiapan kalibrasi berbentuk baris yang dapat
-  dipindai; kartu dipakai untuk mengelompokkan formulir atau hasil pengukuran.
-- Permukaan: garis tipis membagi bagian, radius kecil, tanpa kilau pada setiap
-  kartu. Ruang besar di pembuka, lebih padat pada tabel kerja.
-- Three.js: ilustrasi benih melon, jelas berlabel ilustrasi, bukan rekonstruksi
-  foto. Susunan dapat diubah untuk menjelaskan pemisahan objek per benih.
-- anime.js: perpindahan susunan dan transisi singkat mengikuti tindakan pengguna;
-  tidak ada putaran tanpa henti. Pengurangan gerak langsung ke keadaan akhir.
-- Semua kontrol dapat dijangkau dengan papan ketik; area 3D memiliki alternatif
-  statis jika WebGL tidak tersedia. Tema terang dan gelap memakai token bersama.
-
-## Kejujuran informasi
-
-Data contoh tidak menyamar sebagai hasil nyata. Nilai kosong tidak berubah
-menjadi nol. Ambang edar berasal dari API Standar, bukan kolom contoh Katalog.
-Estimasi tetap tunduk pada kalibrasi backend; tidak ada perubahan bobot,
-ambang, atau urutan fitur model dalam pekerjaan desain ini.
+- ENERGY 2: judul yang tegas dan satu tindakan utama pada setiap halaman.
+- RHYTHM 2: kerangka konsisten, dengan tata letak sesuai isi tiap halaman.
+- MOTION 1: transisi kontrol singkat; angka pengujian langsung terbaca.
+- Hijau mempertahankan identitas benih dan menandai tindakan utama; amber
+  membedakan estimasi serta status yang perlu diperiksa.
+- Latar abu-abu kehijauan menenangkan layar; permukaan putih memperjelas data.
+- Efek kaca pada kepala aplikasi dan panel kontur memberi lapisan visual
+  sesuai permintaan pengguna. Kartu data memakai permukaan lebih padat.
+- Archivo menjadi font antarmuka dan judul karena hurufnya jelas pada tabel
+  serta layar kecil. Angka memakai tabular figures; mono untuk rumus saja.
+- Radius 20 px untuk panel besar, 10 px untuk kontrol, 6 px untuk status:
+  bentuk membedakan wadah, tindakan, dan informasi.
+- Kontur benih dari contoh citra sintetis menunjukkan pekerjaan aplikasi;
+  labelnya menyebut contoh, bukan hasil analisis pengguna.
+- Navigasi mengutamakan analisis dan riwayat; halaman rujukan tetap dapat
+  diakses lewat menu Referensi dan menu ponsel.
+- Kalimat menjelaskan tindakan atau hasil tanpa slogan, nada menggurui,
+  maupun jaminan yang belum diperiksa.
+- Satu lot berarti sekelompok benih dari lot yang sama dalam satu foto.
+  IMF selalu disebut indeks mutu fisik; perkecambahan selalu disebut estimasi.
+- Tema terang dan gelap memakai token yang sama. Kontras, fokus papan ketik,
+  mode demo, serta kondisi kosong dan galat merupakan bagian desain.

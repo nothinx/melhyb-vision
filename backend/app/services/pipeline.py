@@ -76,7 +76,7 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
         raise AnalysisRejected({
             "pesan": (
                 f"Hanya {seg.count} benih terdeteksi, minimal "
-                f"{settings.min_seeds_detected} agar statistik lot stabil. "
+                f"{settings.min_seeds_detected} diperlukan untuk analisis lot. "
                 f"Sebarkan lebih banyak benih pada latar polos yang kontras, "
                 f"jangan bertumpuk."),
             "gerbang_citra": gate.as_dict(),
@@ -85,8 +85,8 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
     if seg.count > settings.max_seeds_detected:
         raise AnalysisRejected({
             "pesan": (
-                f"{seg.count} objek terdeteksi - kemungkinan latar ikut "
-                f"tersegmentasi atau benih terlalu rapat. Gunakan latar polos "
+                f"{seg.count} objek terdeteksi. Benih mungkin terlalu rapat "
+                f"atau bagian latar ikut dikenali sebagai objek. Gunakan latar polos "
                 f"dan sebarkan benih agar tidak saling menempel."),
             "gerbang_citra": gate.as_dict(),
             "jumlah_terdeteksi": seg.count,

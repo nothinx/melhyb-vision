@@ -69,8 +69,17 @@ const PERIKSA = [
   ["accent / surface", (t) => [t.accent, t.surface], 4.5],
   ["accent-ink / accent", (t) => [t["accent-ink"], t.accent], 4.5],
   ["accent / accent-soft", (t) => [t.accent, t["accent-soft"]], 4.5],
+  ["muted / kaca navigasi", (t) => [t.muted, lapis(t.surface, 0.88, t.ground)], 4.5],
+  ["muted / kaca kontur", (t) => [t.muted, lapis(t.surface, 0.74, t["accent-soft"])], 4.5],
+  ["ink-2 / kaca kontur", (t) => [t["ink-2"], lapis(t.surface, 0.74, t["accent-soft"])], 4.5],
+  ["garis-kontrol / kaca navigasi", (t) => [t["garis-kontrol"], lapis(t.surface, 0.88, t.ground)], 3.0],
   ["estimasi / estimasi-soft", (t) => [t.estimasi, t["estimasi-soft"]], 4.5],
-  ["tunas / ground (judul .display)", (t) => [t.tunas, t.ground], 3.0],
+  ["accent / ground (judul aksen)", (t) => [t.accent, t.ground], 3.0],
+  ["accent-deep / accent-soft (lencana aksen)", (t) => [t["accent-deep"], t["accent-soft"]], 4.5],
+  ["ukur / ukur-soft (lencana terukur)", (t) => [t.ukur, t["ukur-soft"]], 4.5],
+  ["ink-2 / ukur-soft (kartu terukur)", (t) => [t["ink-2"], t["ukur-soft"]], 4.5],
+  ["ink-2 / estimasi-soft (kartu estimasi)", (t) => [t["ink-2"], t["estimasi-soft"]], 4.5],
+  ["estimasi / surface (tautan estimasi)", (t) => [t.estimasi, t.surface], 4.5],
   // Batas kontrol: ambang 3,0 (WCAG 1.4.11, komponen antarmuka). Bukan
   // --line, yang memang sengaja nyaris tak terlihat sebagai tepi kartu.
   ["garis-kontrol / ground", (t) => [t["garis-kontrol"], t.ground], 3.0],

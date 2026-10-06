@@ -128,7 +128,7 @@ _PERMENTAN_23 = ("Permentan No. 23 Tahun 2021 — Pembenihan Hortikultura")
 _KEPMENTAN_42 = ("Kepmentan No. 42/Kpts/SR.130/D/10/2019 — Teknis "
                  "Sertifikasi Benih Hortikultura")
 
-_BELUM = "Belum ditemukan di dokumen primer; jangan dipakai sampai diisi."
+_BELUM = "Nilai belum tersedia dari dokumen acuan dan belum digunakan dalam penilaian."
 
 
 STANDAR: dict[str, StandarKomoditas] = {
@@ -138,12 +138,10 @@ STANDAR: dict[str, StandarKomoditas] = {
         regulasi=[_KEPMENTAN_966, _PERMENTAN_12],
         daya_berkecambah_min=Ambang(
             None, "%", StatusVerifikasi.BELUM_ADA,
-            "Tidak dipakai. Angka 95% yang beredar di ringkasan tidak masuk "
-            "akal dibanding komoditas lain yang umumnya di kisaran 80%, dan "
-            "tidak berhasil dicocokkan dengan tabel di dokumen primer. "
-            "Daripada memakai angka yang meragukan, gerbang ambang edar "
-            "dimatikan sampai ada yang membaca tabelnya. Isi lewat "
-            "SIGMA_AMBANG_OVERRIDE setelah membacanya."),
+            "Ambang belum digunakan. Angka 95% dari ringkasan belum "
+            "dicocokkan dengan tabel pada dokumen acuan. Pengelola dapat "
+            "mengisi ambang melalui SIGMA_AMBANG_OVERRIDE setelah "
+            "memeriksa dokumennya."),
         kadar_air_maks=Ambang(
             None, "%", StatusVerifikasi.BELUM_ADA,
             "Angka 12% berasal dari ringkasan yang sama dan belum "
@@ -160,22 +158,20 @@ STANDAR: dict[str, StandarKomoditas] = {
                 "Daya berkecambah minimum", 95.0, "%",
                 "Laman Direktorat Jenderal Tanaman Pangan, artikel tentang "
                 "pengujian mutu benih sorgum (ringkasan, bukan tabel).",
-                "Terlalu tinggi untuk ambang edar. Komoditas pangan lain "
-                "umumnya di kisaran 80%; ambang 95% berarti hampir setiap lot "
-                "komersial gagal. Kemungkinan besar angka itu tertukar dengan "
-                "kemurnian benih, yang memang biasanya 95-98%.",
+                "Angka pada ringkasan belum dicocokkan dengan tabel dokumen "
+                "acuan. Parameter dan kelas benih yang dimaksud perlu "
+                "dipastikan sebelum angka ini digunakan.",
             ),
             Klaim(
                 "Kadar air maksimum", 12.0, "%",
                 "Sumber yang sama.",
-                "Masuk akal untuk serealia, tetapi tetap belum dicocokkan "
-                "dengan tabel primer.",
+                "Nilai ini belum dicocokkan dengan tabel pada dokumen acuan.",
             ),
         ],
         peringatan=(
-            "Gerbang ambang edar untuk sorgum DIMATIKAN. Angka 95% yang "
-            "beredar tidak dipakai karena tidak masuk akal dan belum "
-            "terverifikasi - lihat daftar klaim di bawah."),
+            "Ambang edar sorgum belum digunakan. Nilai dari ringkasan belum "
+            "terverifikasi pada dokumen acuan. Rinciannya tersedia pada "
+            "daftar angka yang belum digunakan."),
     ),
     "melon": StandarKomoditas(
         slug="melon", nama="Melon", nama_latin="Cucumis melo L.",
@@ -188,11 +184,9 @@ STANDAR: dict[str, StandarKomoditas] = {
         kelas_benih=["Benih Penjenis", "Benih Dasar", "Benih Pokok",
                      "Benih Sebar"],
         peringatan=(
-            "Gerbang ambang edar untuk melon DIMATIKAN. "
-            "Melon masuk rezim hortikultura, bukan tanaman pangan, sehingga "
-            "kelas benih dan tabel ambangnya berbeda. Lampiran Permentan "
-            "23/2021 belum berhasil diakses; ambil dokumen lengkapnya dari "
-            "JDIH Kementan atau BPSBTPH provinsi."),
+            "Ambang edar melon belum digunakan karena nilainya belum "
+            "diverifikasi pada dokumen acuan. Periksa dokumen lengkap "
+            "beserta lampirannya melalui JDIH Kementan atau BPSBTPH provinsi."),
     ),
     "edamame": StandarKomoditas(
         slug="edamame", nama="Edamame", nama_latin="Glycine max (L.) Merr.",
@@ -203,13 +197,9 @@ STANDAR: dict[str, StandarKomoditas] = {
         benih_murni_min=Ambang(None, "%", StatusVerifikasi.BELUM_ADA, _BELUM),
         biji_gulma_maks=Ambang(None, "%", StatusVerifikasi.BELUM_ADA, _BELUM),
         peringatan=(
-            "Gerbang ambang edar untuk edamame DIMATIKAN. "
-            "Edamame secara botani adalah Glycine max - kedelai. Tetapi di "
-            "Indonesia ia diperlakukan sebagai sayuran. Rezim mana yang "
-            "berlaku untuk BENIH-nya (tanaman pangan lewat Kepmentan 966/2022, "
-            "atau hortikultura lewat Permentan 23/2021) menentukan tabel "
-            "ambang mana yang dipakai. Ini pertanyaan yang harus dijawab lebih "
-            "dulu, dan layak ditulis sebagai temuan di proposal."),
+            "Ambang edar edamame belum digunakan. Kelompok regulasi yang "
+            "menjadi acuan perlu dipastikan sebelum memilih tabel ambang. "
+            "Mintalah konfirmasi kepada pengelola pengujian benih."),
     ),
 }
 
@@ -227,12 +217,13 @@ def terapkan_isian_operator() -> None:
             continue
         st.daya_berkecambah_min = Ambang(
             nilai, "%", StatusVerifikasi.DIISI_OPERATOR,
-            f"Diisi operator lewat SIGMA_AMBANG_OVERRIDE. Bukan angka yang "
-            f"diverifikasi sistem - pastikan {nilai:.0f}% memang tertulis di "
-            f"{st.regulasi[0]}.")
+            f"Nilai {nilai:.0f}% diisi oleh operator melalui "
+            f"SIGMA_AMBANG_OVERRIDE dan belum diverifikasi. Periksa nilai ini "
+            f"pada dokumen acuan {st.regulasi[0]} sebelum menggunakan "
+            f"hasilnya dalam laporan resmi.")
         st.peringatan = (
-            f"Ambang {nilai:.0f}% diisi operator, bukan dibaca sistem dari "
-            f"dokumen. Cantumkan nomor dan halaman dokumennya di laporan.")
+            f"Ambang {nilai:.0f}% diisi operator dan belum diverifikasi. "
+            f"Cantumkan sumber serta halaman dokumen acuan pada laporan.")
 
 
 terapkan_isian_operator()
@@ -248,21 +239,17 @@ CARA_MEMPEROLEH_DOKUMEN = [
     {
         "sumber": "BPSBTPH Provinsi Jawa Tengah",
         "alamat": "Kantor BPSBTPH provinsi",
-        "untuk": "Tabel ambang mutu yang benar-benar dipakai penguji di "
-                 "lapangan, plus konfirmasi rezim mana yang berlaku untuk "
-                 "edamame. Paling cepat: datangi langsung, bawa daftar "
-                 "pertanyaan.",
+        "untuk": "Konfirmasi tabel ambang mutu dan kelompok regulasi yang "
+                 "menjadi acuan pengujian.",
     },
     {
         "sumber": "BSN / Pesta SNI",
         "alamat": "https://pesta.bsn.go.id",
-        "untuk": "Cek apakah ada SNI khusus untuk sorgum, melon, atau "
-                 "edamame. Yang terkonfirmasi baru SNI 6233:2015 untuk padi.",
+        "untuk": "Pencarian standar SNI berdasarkan komoditas dan nomor dokumen.",
     },
     {
         "sumber": "BBPPMBTPH",
         "alamat": "https://bbppmbtph.tanamanpangan.pertanian.go.id",
-        "untuk": "Metode pengujian mutu benih yang diakui, termasuk untuk "
-                 "sorgum. Berguna untuk menulis protokol UKDdP di proposal.",
+        "untuk": "Informasi metode dan prosedur pengujian mutu benih.",
     },
 ]

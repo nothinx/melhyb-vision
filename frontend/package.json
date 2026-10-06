@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "build:tunggal": "vite build --config vite.single.config.ts",
     "periksa:kontras": "node skrip/periksa-kontras.mjs",
-    "periksa:api": "node --test skrip/periksa-api.mjs"
+    "periksa:api": "node --test skrip/periksa-api.mjs",
+    "periksa:halaman": "node --test skrip/periksa-halaman.mjs"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
@@ -22,6 +23,7 @@
     "animejs": "^4.5.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.37.0",
+    "motion": "^14.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.3.1",

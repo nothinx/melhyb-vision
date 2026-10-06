@@ -94,10 +94,10 @@ def decide(
             kelas="Belum dapat dinilai",
             dapat_diedarkan=None,
             alasan=(
-                "Model kalibrasi untuk komoditas ini belum tersedia atau belum "
-                "memenuhi syarat validasi, sehingga daya berkecambah tidak "
-                "diestimasi. Yang ditampilkan hanya Indeks Mutu Fisik "
-                f"({imf:.1f}/100) yang diukur langsung dari citra."
+                "Estimasi daya berkecambah belum dapat digunakan karena model "
+                "kalibrasi belum tersedia, belum lolos validasi, atau lot berada "
+                "di luar rentang kalibrasi. Hasil yang tersedia adalah indeks "
+                f"mutu fisik ({imf:.1f}/100), yang dihitung dari foto."
             ),
             gerbang_aktif=False,
         )
@@ -111,9 +111,9 @@ def decide(
     catatan_ambang = ""
     if ambang and not ambang["terverifikasi"]:
         catatan_ambang = (
-            " Perhatian: ambang ini berstatus "
+            " Ambang ini berstatus "
             f"\"{ambang['status']}\" dan belum dicocokkan dengan tabel di "
-            "dokumen primer, jadi putusan ini belum boleh dikutip sebagai "
+            "dokumen primer. Hasil ini belum dapat digunakan sebagai "
             "kesimpulan resmi.")
 
     if ambang and db_low is not None and db_low < ambang["min_daya_berkecambah"]:
@@ -124,7 +124,8 @@ def decide(
             alasan=(
                 f"Batas bawah estimasi daya berkecambah ({db_low:.1f}%) berada "
                 f"di bawah ambang {ambang['min_daya_berkecambah']:.0f}% untuk "
-                f"{komoditas}. Kelas tidak dinaikkan oleh parameter fisik. "
+                f"{komoditas}. Nilai fisik yang tinggi tidak mengubah hasil "
+                f"penilaian ambang ini. "
                 f"Rujukan ambang: {ambang['sumber']}.{catatan_ambang}"
             ),
             gerbang_aktif=True, ambang=ambang,
@@ -138,7 +139,7 @@ def decide(
     )
     if not ambang:
         dasar += (
-            f" Gerbang ambang edar tidak aktif: ambang daya berkecambah resmi "
+            f" Kelayakan edar belum dinilai: ambang daya berkecambah resmi "
             f"untuk {komoditas} belum ditemukan di dokumen primer, sehingga "
             f"kelayakan edar tidak dinilai.")
 
