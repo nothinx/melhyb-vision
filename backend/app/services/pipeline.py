@@ -7,10 +7,10 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass
-from pathlib import Path
 
 import cv2
 
+from .. import berkas
 from ..config import settings
 from ..scoring import calibration
 from ..scoring.grading import Verdict, decide
@@ -38,8 +38,8 @@ class AnalysisOutput:
     imf: float
     estimates: list[calibration.Estimate]
     verdict: Verdict
-    image_path: Path
-    annotated_path: Path
+    image_name: str
+    annotated_name: str
     segmentation_meta: dict
 
     def as_dict(self) -> dict:
@@ -52,8 +52,8 @@ class AnalysisOutput:
             "indeks_mutu_fisik": round(self.imf, 1),
             "estimasi_fisiologis": [e.as_dict() for e in self.estimates],
             "putusan": self.verdict.as_dict(),
-            "berkas_citra": self.image_path.name,
-            "berkas_anotasi": self.annotated_path.name,
+            "berkas_citra": self.image_name,
+            "berkas_anotasi": self.annotated_name,
         }
 
 
@@ -124,18 +124,22 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
 
     # 5. Simpan citra asli dan citra beranotasi.
     stem = uuid.uuid4().hex[:16]
-    img_path = settings.storage_dir / f"{stem}.jpg"
-    ann_path = settings.storage_dir / f"{stem}_anotasi.jpg"
-    cv2.imwrite(str(img_path), img, [cv2.IMWRITE_JPEG_QUALITY, 90])
-    cv2.imwrite(str(ann_path),
-                annotate(img, seg,
-                         defect_flags(feats, settings.defect_solidity_threshold, seg)),
-                [cv2.IMWRITE_JPEG_QUALITY, 90])
+    img_name, ann_name = f"{stem}.jpg", f"{stem}_anotasi.jpg"
+    # Foto asli disimpan apa adanya (skala asli, untuk audit). Anotasi hanya
+    # untuk dilihat, jadi diperkecil ke sisi 2048 px supaya database hemat.
+    berkas.simpan(img_name, data, "image/jpeg")
+    ann = annotate(img, seg,
+                   defect_flags(feats, settings.defect_solidity_threshold, seg))
+    k = 2048 / max(ann.shape[:2])
+    if k < 1:
+        ann = cv2.resize(ann, None, fx=k, fy=k, interpolation=cv2.INTER_AREA)
+    berkas.simpan(ann_name, cv2.imencode(".jpg", ann, [cv2.IMWRITE_JPEG_QUALITY, 85])[1].tobytes(),
+                  "image/jpeg")
 
     return AnalysisOutput(
         gate=gate, scale=scale, lot=lot, indices=indices, imf=imf,
         estimates=estimates, verdict=verdict,
-        image_path=img_path, annotated_path=ann_path,
+        image_name=img_name, annotated_name=ann_name,
         segmentation_meta={
             "jumlah_benih": seg.count,
             "kanal_dipakai": seg.channel_used,

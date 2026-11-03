@@ -6,6 +6,7 @@ proposal dan bisa diaudit ulang oleh penguji.
 """
 from pathlib import Path
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +14,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     app_name: str = "SIGMA"
-    database_url: str = f"sqlite:///{BASE_DIR / 'sigma.db'}"
-    storage_dir: Path = BASE_DIR / "storage"
-    model_dir: Path = BASE_DIR / "models"
+    # SIGMA_DATABASE_URL, atau DATABASE_URL yang dipasang integrasi Neon di
+    # Vercel. Foto dan model kalibrasi ikut tersimpan di sini (app/berkas.py).
+    database_url: str = Field(f"sqlite:///{BASE_DIR / 'sigma.db'}",
+                              validation_alias=AliasChoices("SIGMA_DATABASE_URL",
+                                                            "DATABASE_URL"))
     # Model segmentasi + kelas baik/cacat (YOLO26s-seg v3, ONNX). Tidak ada
     # berkasnya -> kembali ke segmentasi Otsu + ambang solidity.
     yolo_model: Path = BASE_DIR / "model_visi" / "benih_yolo_v3.onnx"
@@ -34,7 +37,9 @@ class Settings(BaseSettings):
     # dinamis, bukan lewat batas atas rata-rata.
     max_blown_fraction: float = 0.15     # piksel >250 saja
     min_dynamic_range: float = 45.0      # persentil 99 dikurangi persentil 1
-    min_seeds_detected: int = 15         # lot terlalu sedikit -> statistik tidak stabil
+    # Protokol foto light box (dataset S01-S03, model YOLO v3) = 10 benih per
+    # foto; di bawah itu sebaran antar benih tidak stabil.
+    min_seeds_detected: int = 10
     max_seeds_detected: int = 2000
 
     # --- Normalisasi indeks terukur ----------------------------------------
@@ -81,5 +86,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-settings.storage_dir.mkdir(parents=True, exist_ok=True)
-settings.model_dir.mkdir(parents=True, exist_ok=True)

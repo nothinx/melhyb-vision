@@ -10,8 +10,6 @@ sys.path.insert(0, str(ROOT))
 
 _tmp = tempfile.mkdtemp(prefix="sigma-test-")
 os.environ["SIGMA_DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
-os.environ["SIGMA_STORAGE_DIR"] = f"{_tmp}/storage"
-os.environ["SIGMA_MODEL_DIR"] = f"{_tmp}/models"
 # Fixture sintetis bukan foto light box: uji jalur Otsu, YOLO diuji di test_yolo.py.
 os.environ["SIGMA_YOLO_MODEL"] = f"{_tmp}/tanpa-model.onnx"
 
@@ -19,6 +17,10 @@ from fastapi.testclient import TestClient          # noqa: E402
 from app.main import app                            # noqa: E402
 from tests.make_fixture import synthetic_lot        # noqa: E402
 import cv2                                          # noqa: E402
+from app.db import init_db                           # noqa: E402
+
+# Tabel (termasuk Berkas) harus ada walau berkas uji dijalankan sendiri.
+init_db()
 
 
 @pytest.fixture(scope="session")

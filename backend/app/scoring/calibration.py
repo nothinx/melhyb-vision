@@ -14,10 +14,10 @@ Aturan main modul ini:
 """
 from __future__ import annotations
 
+import io
 import json
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
-from pathlib import Path
 
 import joblib
 import numpy as np
@@ -27,6 +27,7 @@ from sklearn.model_selection import KFold, cross_val_predict
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from .. import berkas
 from ..config import settings
 from ..vision.features import LotFeatures
 
@@ -61,12 +62,17 @@ class CalibrationReport:
         return d
 
 
-def _model_path(komoditas: str, target: str) -> Path:
-    return settings.model_dir / f"{komoditas.lower()}__{target}.joblib"
+def _model_path(komoditas: str, target: str) -> str:
+    return f"kalibrasi/{komoditas.lower()}__{target}.joblib"
 
 
-def _report_path(komoditas: str, target: str) -> Path:
-    return settings.model_dir / f"{komoditas.lower()}__{target}.json"
+def _report_path(komoditas: str, target: str) -> str:
+    return f"kalibrasi/{komoditas.lower()}__{target}.json"
+
+
+def _simpan_laporan(report: CalibrationReport) -> None:
+    berkas.simpan(_report_path(report.komoditas, report.target),
+                  json.dumps(report.as_dict(), indent=2).encode("utf-8"), "application/json")
 
 
 def train(komoditas: str, target: str, X: list[list[float]],
@@ -84,8 +90,7 @@ def train(komoditas: str, target: str, X: list[list[float]],
              f"Model memerlukan minimal {settings.min_calibration_samples} "
              f"lot sebelum dapat memberikan estimasi."),
             now)
-        _report_path(komoditas, target).write_text(
-            json.dumps(report.as_dict(), indent=2), encoding="utf-8")
+        _simpan_laporan(report)
         return report
 
     folds = min(5, n)
@@ -112,20 +117,19 @@ def train(komoditas: str, target: str, X: list[list[float]],
     pipe.fit(Xa, ya)
     report = CalibrationReport(komoditas, target, n, Xa.shape[1], folds,
                                mae, rmse, r2, usable, reason, now)
+    buf = io.BytesIO()
     joblib.dump({
         "pipeline": pipe, "rmse": rmse,
         "feature_mean": Xa.mean(axis=0), "feature_std": Xa.std(axis=0),
-    }, _model_path(komoditas, target))
-    _report_path(komoditas, target).write_text(
-        json.dumps(report.as_dict(), indent=2), encoding="utf-8")
+    }, buf)
+    berkas.simpan(_model_path(komoditas, target), buf.getvalue())
+    _simpan_laporan(report)
     return report
 
 
 def load_report(komoditas: str, target: str) -> dict | None:
-    p = _report_path(komoditas, target)
-    if not p.exists():
-        return None
-    return json.loads(p.read_text(encoding="utf-8"))
+    b = berkas.baca(_report_path(komoditas, target))
+    return json.loads(b.isi) if b else None
 
 
 @dataclass
@@ -175,11 +179,13 @@ class Estimate:
 def predict(komoditas: str, target: str, lot: LotFeatures) -> Estimate | None:
     """Kembalikan estimasi, atau None kalau model belum layak pakai."""
     report = load_report(komoditas, target)
-    path = _model_path(komoditas, target)
-    if not report or not report.get("usable") or not path.exists():
+    if not report or not report.get("usable"):
         return None
-
-    bundle = joblib.load(path)
+    b = berkas.baca(_model_path(komoditas, target))
+    if b is None:
+        return None
+    # joblib = pickle: hanya pernah dimuat dari berkas yang ditulis train().
+    bundle = joblib.load(io.BytesIO(b.isi))
     pipe, rmse = bundle["pipeline"], bundle["rmse"]
     x = np.asarray([lot.vector()], dtype=float)
 

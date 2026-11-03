@@ -87,9 +87,14 @@ di dalam foto, jadi tidak ada mode "satu benih".
 - `LotFeatures.vector()` — **urutannya tetap**. Model `.joblib` yang sudah
   dilatih memakai urutan ini; menambah/menggeser fitur membatalkan model lama
   di `SIGMA_MODEL_DIR` tanpa error yang terlihat.
-- Model dan laporannya disimpan sebagai berkas (`{komoditas}__{target}.joblib`
-  / `.json`) di `model_dir`, bukan di DB; tabel `ModelKalibrasi` hanya cermin
-  metriknya untuk UI.
+- Semua berkas (foto asli, anotasi, model kalibrasi
+  `kalibrasi/{komoditas}__{target}.joblib` / `.json`) disimpan di tabel
+  `Berkas` lewat `app/berkas.py`, bukan di disk: container Vercel tanpa
+  status. Tabel `ModelKalibrasi` hanya cermin metriknya untuk UI. DB dibaca
+  dari `SIGMA_DATABASE_URL` atau `DATABASE_URL` (Neon di Vercel).
+- Segmentasi + kelas cacat: `vision/yolo.py` (ONNX di `model_visi/`, ubin
+  1664 px skala asli). Foto tidak boleh diperkecil sebelum masuk model.
+  Lisensi model AGPL-3.0 → kode sumber layanan wajib tersedia bagi pengguna.
 
 **Frontend (React 19 + Vite + Tailwind v4, hash router).**
 `lib/api.ts` menyelidiki `/api/kesehatan` sekali; gagal → seluruh aplikasi

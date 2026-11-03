@@ -96,7 +96,7 @@ function Hero() {
             <div className="rounded-[28px] border border-line bg-[var(--kaca)] p-6 shadow-[var(--bayang-naik)] backdrop-blur-xl">
               <span className="mono text-kecil text-accent">Satu foto, satu lot</span>
               <h2 className="display-kecil mt-2 mb-2 text-[1.6rem] text-ink">Benih disebar di atas alas polos.</h2>
-              <p className="m-0 text-dasar text-ink-2">Keseragaman dihitung dari sebaran antar benih di dalam foto, jadi satu foto selalu mewakili satu lot. Minimal 15 benih.</p>
+              <p className="m-0 text-dasar text-ink-2">Keseragaman dihitung dari sebaran antar benih di dalam foto, jadi satu foto selalu mewakili satu lot. Minimal 10 benih.</p>
             </div>
           </Tahap>
           <Tahap p={rel} masuk={[0.6, 0.67]} className="absolute inset-x-4 bottom-10 sm:right-auto sm:bottom-14 sm:left-[max(1rem,calc((100vw-1320px)/2+3rem))] sm:w-[440px]">
@@ -265,7 +265,7 @@ export default function Beranda() {
             <ul className="mt-8 grid list-none gap-3 p-0 sm:grid-cols-3">
               {[
                 { ikon: Grid3x3, t: "Alas polos yang kontras dengan warna benih" },
-                { ikon: Camera, t: "Minimal 15 benih, tidak bertumpuk" },
+                { ikon: Camera, t: "Minimal 10 benih, tidak bertumpuk" },
                 { ikon: Ruler, t: "Penanda ArUco 20 mm untuk ukuran mm" },
               ].map(({ ikon: Ikon, t }) => (
                 <li key={t} className="rounded-2xl border border-line bg-[var(--kaca)] p-4 text-dasar text-ink-2 backdrop-blur-md">

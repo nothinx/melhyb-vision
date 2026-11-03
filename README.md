@@ -123,7 +123,7 @@ browser. Hasil serta batas verifikasi perombakan dicatat di
        ▼                                      ▼
  gerbang kualitas citra              uji UKDdP 1-3 minggu
    (tolak buram / gelap /                     │
-    kontras rendah / <15 benih)               │
+    kontras rendah / <10 benih)               │
        │                                      │
        ▼                                      ▼
  segmentasi tiap benih                DB = (A+B)/N x 100

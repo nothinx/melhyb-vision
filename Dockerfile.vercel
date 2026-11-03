@@ -1,7 +1,7 @@
 # Image untuk Vercel (container function). Sama dengan backend/Dockerfile,
-# bedanya: dengar di $PORT (bawaan Vercel 80) dan data di /tmp karena
-# container Vercel tanpa status - riwayat & kalibrasi hilang saat instance
-# berhenti. Untuk data permanen pakai docker compose (volume /data).
+# bedanya dengar di $PORT (bawaan Vercel 80). Container tanpa status, jadi
+# riwayat, foto, dan model kalibrasi disimpan di Postgres Neon lewat
+# DATABASE_URL yang dipasang integrasi Neon (lihat app/berkas.py).
 FROM node:22-slim AS frontend
 WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json ./
@@ -22,10 +22,7 @@ COPY backend/app /srv/backend/app
 COPY backend/model_visi /srv/backend/model_visi
 COPY --from=frontend /frontend/dist /srv/frontend/dist
 
-ENV SIGMA_DATABASE_URL=sqlite:////tmp/sigma.db \
-    SIGMA_STORAGE_DIR=/tmp/storage \
-    SIGMA_MODEL_DIR=/tmp/models \
-    PORT=80
+ENV PORT=80
 
 WORKDIR /srv/backend
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]

@@ -3,6 +3,7 @@ tidak layak diukur."""
 import cv2
 import numpy as np
 
+from app import berkas
 from app.config import settings
 from app.services.pipeline import AnalysisRejected, run
 from app.vision.preprocess import check_image, decode_image
@@ -62,7 +63,9 @@ def test_tanpa_penanda_ukuran_mm_tidak_dilaporkan(lot_bagus):
 
 def test_anotasi_berbeda_dari_citra_asli(lot_buruk):
     out = run(lot_buruk, "sorgum")
-    asli = cv2.imread(str(out.image_path))
-    anot = cv2.imread(str(out.annotated_path))
+    # Keduanya kini tersimpan di database (app/berkas.py), bukan di disk.
+    def muat(nama):
+        return cv2.imdecode(np.frombuffer(berkas.baca(nama).isi, np.uint8), cv2.IMREAD_COLOR)
+    asli, anot = muat(out.image_name), muat(out.annotated_name)
     assert asli is not None and anot is not None
     assert np.abs(asli.astype(int) - anot.astype(int)).sum() > 0

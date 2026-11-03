@@ -52,7 +52,7 @@ export const DEMO_METODOLOGI: Metodologi = {
   ],
   gerbang_citra: {
     sisi_minimum_px: 640, ketajaman_minimum: 35, fraksi_jenuh_maksimum: 0.15,
-    rentang_dinamis_minimum: 45, benih_minimum: 15,
+    rentang_dinamis_minimum: 45, benih_minimum: 10,
   },
   normalisasi_indeks: {
     cv_luas_skor_nol: 0.45, delta_e_skor_nol: 22, solidity_skor_nol: 0.85,

@@ -212,6 +212,11 @@ export default function Shell() {
             {REFERENSI.map(({ ke, label }) => <Link key={ke} to={ke} className="py-1.5 text-dasar text-ink-2 hover:text-accent">{label}</Link>)}
           </div>
         </div>
+        {/* AGPL-3.0 (model Ultralytics YOLO26): pengguna layanan berhak atas kode sumbernya. */}
+        <p className="bingkai m-0 pb-6 text-kecil text-muted">
+          Perangkat lunak bebas berlisensi AGPL-3.0, memakai model segmentasi YOLO26 (Ultralytics).{" "}
+          <a href="https://github.com/nothinx/sigma-benih" className="text-ink-2 underline hover:text-accent">Kode sumber</a>
+        </p>
         <div aria-hidden className="display pointer-events-none -mb-[0.18em] text-center text-[clamp(5rem,22vw,20rem)] leading-none text-surface-2 select-none">
           melon
         </div>

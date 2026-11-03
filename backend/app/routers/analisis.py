@@ -3,10 +3,10 @@ import csv
 import io
 
 from fastapi import (APIRouter, Depends, File, Form, HTTPException, UploadFile)
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 from sqlmodel import Session, select
 
-from ..config import settings
+from .. import berkas
 from ..db import get_session
 from ..models import Analisis, Komoditas, Varietas
 from ..services.pipeline import AnalysisRejected, run
@@ -51,7 +51,7 @@ async def analisis_baru(
 
     row = Analisis(
         batch_id=batch_id, komoditas_slug=km.slug, varietas_id=varietas_id,
-        berkas_citra=out.image_path.name, berkas_anotasi=out.annotated_path.name,
+        berkas_citra=out.image_name, berkas_anotasi=out.annotated_name,
         n_benih=out.lot.n_seeds, indeks_mutu_fisik=round(out.imf, 1),
         skor_akhir=out.verdict.skor, kelas=out.verdict.kelas,
         gerbang=out.gate.as_dict(), skala=out.scale.as_dict(),
@@ -116,6 +116,7 @@ def hapus(analisis_id: int, s: Session = Depends(get_session)):
     if not row:
         raise HTTPException(404, "Analisis tidak ditemukan.")
     s.delete(row); s.commit()
+    berkas.hapus(row.berkas_citra, row.berkas_anotasi)
 
 
 @router.get("/{analisis_id}/citra")
@@ -125,10 +126,12 @@ def citra(analisis_id: int, anotasi: bool = True,
     if not row:
         raise HTTPException(404, "Analisis tidak ditemukan.")
     name = row.berkas_anotasi if anotasi else row.berkas_citra
-    path = settings.storage_dir / name
-    if not path.exists():
+    b = berkas.baca(name)
+    if b is None:
         raise HTTPException(404, "Berkas citra tidak ada di penyimpanan.")
-    return FileResponse(path, media_type="image/jpeg")
+    # Nama berkas berisi hash acak dan isinya tidak pernah berubah.
+    return Response(b.isi, media_type=b.jenis,
+                    headers={"Cache-Control": "private, max-age=31536000, immutable"})
 
 
 @router.get("/ekspor/csv")

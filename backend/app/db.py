@@ -5,10 +5,17 @@ from sqlmodel import Session, SQLModel, create_engine, select
 from .config import settings
 from .models import Komoditas, Varietas
 
+_url = settings.database_url
+# Neon memberi "postgres://"/"postgresql://"; SQLAlchemy butuh dialek + driver.
+for _awal in ("postgres://", "postgresql://"):
+    if _url.startswith(_awal):
+        _url = "postgresql+psycopg://" + _url[len(_awal):]
 engine = create_engine(
-    settings.database_url, echo=False,
-    connect_args={"check_same_thread": False}
-    if settings.database_url.startswith("sqlite") else {},
+    _url, echo=False, pool_pre_ping=True,   # Neon menutup koneksi menganggur
+    # DATABASE_URL Neon lewat pooler (PgBouncer mode transaksi): prepared
+    # statement psycopg bisa jatuh ke koneksi lain, jadi dimatikan.
+    connect_args={"check_same_thread": False} if _url.startswith("sqlite")
+    else {"prepare_threshold": None},
 )
 
 # Fokus penelitian: benih melon. Komoditas lain tetap bisa ditambah lewat

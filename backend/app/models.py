@@ -99,6 +99,13 @@ class UjiUKDdP(SQLModel, table=True):
     dibuat_pada: datetime = Field(default_factory=_now)
 
 
+class Berkas(SQLModel, table=True):
+    """Isi berkas (foto, anotasi, model kalibrasi); lihat app/berkas.py."""
+    nama: str = Field(primary_key=True)
+    isi: bytes
+    jenis: str = "application/octet-stream"
+
+
 class ModelKalibrasi(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     komoditas_slug: str = Field(index=True)

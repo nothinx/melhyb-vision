@@ -7,8 +7,6 @@ services:
       - "8000:8000"
     environment:
       SIGMA_DATABASE_URL: sqlite:////data/sigma.db
-      SIGMA_STORAGE_DIR: /data/storage
-      SIGMA_MODEL_DIR: /data/models
     volumes:
       - sigma-data:/data
     restart: unless-stopped
