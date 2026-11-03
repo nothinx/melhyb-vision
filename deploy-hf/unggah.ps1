@@ -1,6 +1,6 @@
-# Unggah demo SIGMA (satu berkas, mode demo) ke Hugging Face Space statis.
+# Unggah demo MELHYB-VISION (satu berkas, mode demo) ke Hugging Face Space statis.
 # Space Docker butuh akun PRO; Space statis gratis. Prasyarat: `hf auth login`.
-# Pakai: .\deploy-hf\unggah.ps1 -Space nama-user/sigma
+# Pakai: .\deploy-hf\unggah.ps1 -Space nama-user/melhyb-vision
 param([Parameter(Mandatory)][string]$Space)
 # Tanpa ErrorActionPreference=Stop: di PS 5.1 peringatan stderr hf dianggap error.
 Set-Location (Split-Path $PSScriptRoot)

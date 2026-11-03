@@ -2,7 +2,7 @@
 **/__pycache__
 frontend/dist
 frontend/dist-tunggal
-backend/sigma.db
+backend/melhyb.db
 backend/storage
 backend/models
 backend/.env

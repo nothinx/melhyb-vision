@@ -207,7 +207,7 @@ export default function Analisis() {
     <div className="grid gap-12">
       <header className="max-w-[820px]">
         <h1 className="display m-0 text-[clamp(2.4rem,5.2vw,4.2rem)] text-ink">Analisis satu lot.</h1>
-        <p className="mt-5 mb-0 max-w-[56ch] text-sedang text-ink-2">Pilih varietasnya, lalu unggah satu foto berisi benih dari lot itu. SIGMA mengukur mutu fisik dan keseragamannya.</p>
+        <p className="mt-5 mb-0 max-w-[56ch] text-sedang text-ink-2">Pilih varietasnya, lalu unggah satu foto berisi benih dari lot itu. MELHYB-VISION mengukur mutu fisik dan keseragamannya.</p>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">

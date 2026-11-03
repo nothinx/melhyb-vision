@@ -1,6 +1,6 @@
 """Bangkitkan berkas ikon aplikasi dari satu definisi lambang.
 
-Lambang SIGMA: satu benih di dalam lingkaran ukur — benda yang dinilai, dan
+Lambang MELHYB-VISION: satu benih di dalam lingkaran ukur — benda yang dinilai, dan
 tindakan menilainya. Bentuk yang sama dipakai di kepala halaman (SVG sebaris
 di Shell.tsx), sebagai favicon (public/ikon.svg), dan sebagai ikon aplikasi
 saat dipasang ke layar utama ponsel (PNG di bawah).

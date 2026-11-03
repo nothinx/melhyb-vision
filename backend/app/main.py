@@ -20,7 +20,7 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
-    title="SIGMA API",
+    title="MELHYB-VISION API",
     version="1.0.0",
     description=(
         "Penilaian mutu fisik benih dari citra, dengan pemisahan tegas antara "
@@ -87,8 +87,8 @@ def metodologi():
             "batasan": "cacat pada lot VB/VC = benih VA jelek yang tercampur; "
                        "foto light box dari tim yang sama",
             "cadangan": "Otsu + watershed dan ambang solidity bila model tidak ada",
-            "lisensi": "AGPL-3.0 (Ultralytics); kode sumber SIGMA: "
-                       "https://github.com/nothinx/sigma-benih",
+            "lisensi": "AGPL-3.0 (Ultralytics); kode sumber MELHYB-VISION: "
+                       "https://github.com/nothinx/melhyb-vision",
         },
         "normalisasi_indeks": {
             "cv_luas_skor_nol": settings.cv_area_worst,

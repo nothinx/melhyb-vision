@@ -191,7 +191,7 @@ def test_endpoint_standar_terbuka(client):
         assert k["regulasi"], k["slug"]
         assert "status" in k["daya_berkecambah_min"]
     assert d["cara_memperoleh_dokumen"]
-    assert d["isian_operator"]["variabel"] == "SIGMA_AMBANG_OVERRIDE"
+    assert d["isian_operator"]["variabel"] == "MELHYB_AMBANG_OVERRIDE"
     # Tidak satu pun komoditas boleh mengaku siap sebelum diverifikasi.
     assert all(not k["siap_dipakai"] for k in d["komoditas"])
     # Tidak satu pun ambang operatif terisi.

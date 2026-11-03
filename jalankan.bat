@@ -1,5 +1,5 @@
 @echo off
-rem Jalankan SIGMA dengan klik dua kali: satu server (API + tampilan) di
+rem Jalankan MELHYB-VISION dengan klik dua kali: satu server (API + tampilan) di
 rem http://localhost:%PORT%. Untuk pengembangan (hot reload) pakai jalankan.ps1.
 setlocal
 cd /d "%~dp0"
@@ -22,7 +22,7 @@ if not exist "frontend\dist\index.html" (
 )
 
 echo.
-echo SIGMA berjalan di http://localhost:%PORT%  ^(tutup jendela ini untuk berhenti^)
+echo MELHYB-VISION berjalan di http://localhost:%PORT%  ^(tutup jendela ini untuk berhenti^)
 start "" "http://localhost:%PORT%"
 cd backend
 "..\.venv\Scripts\uvicorn.exe" app.main:app --host 127.0.0.1 --port %PORT%

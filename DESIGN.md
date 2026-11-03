@@ -1,7 +1,7 @@
-# Arah desain SIGMA Benih
+# Arah desain MELHYB-VISION
 
 Arahan pengguna: modern, minimalis, glass style, rapi, dengan bahasa Indonesia
-yang lebih natural. Pemeriksaan antislop diterapkan selama pengerjaan.
+yang lebih natural. Pemeriksaan design-guide (sloplint) diterapkan selama pengerjaan.
 
 - ENERGY 2: judul yang tegas dan satu tindakan utama pada setiap halaman.
 - RHYTHM 2: kerangka konsisten, dengan tata letak sesuai isi tiap halaman.

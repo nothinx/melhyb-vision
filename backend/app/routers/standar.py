@@ -14,11 +14,11 @@ def daftar_standar():
         "cara_memperoleh_dokumen": CARA_MEMPEROLEH_DOKUMEN,
         "isian_operator": {
             "aktif": settings.ambang_operator(),
-            "variabel": "SIGMA_AMBANG_OVERRIDE",
-            "contoh": "SIGMA_AMBANG_OVERRIDE=\"sorgum:80,melon:75\"",
+            "variabel": "MELHYB_AMBANG_OVERRIDE",
+            "contoh": "MELHYB_AMBANG_OVERRIDE=\"sorgum:80,melon:75\"",
             "penjelasan": (
                 "Pengelola server dapat mengisi ambang melalui "
-                "SIGMA_AMBANG_OVERRIDE setelah memeriksa dokumen acuan. "
+                "MELHYB_AMBANG_OVERRIDE setelah memeriksa dokumen acuan. "
                 "Nilainya akan berstatus diisi operator dan status tersebut "
                 "dicantumkan pada hasil analisis."
             ),

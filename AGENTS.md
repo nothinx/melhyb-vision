@@ -18,7 +18,7 @@ Inggris untuk nama fungsi internal (`compute_indices`, `segment_seeds`).
 ./jalankan.sh            # Linux/macOS
 .\jalankan.ps1           # Windows PowerShell
 
-# Uji backend — HARUS dari dalam backend/ (conftest.py meng-set SIGMA_* ke tmpdir)
+# Uji backend — HARUS dari dalam backend/ (conftest.py meng-set MELHYB_* ke tmpdir)
 cd backend && pytest -q
 pytest tests/test_vision.py -q              # satu berkas
 pytest tests/test_scoring.py::test_nama -q  # satu uji
@@ -48,7 +48,7 @@ muncul lebih mudah, perubahan itu salah.
 `backend/app/standar.py` punya `StatusVerifikasi`; `TERVERIFIKASI` hanya untuk
 angka yang dibaca dari dokumen primer. Bawaannya tidak ada ambang yang dipakai,
 jadi gerbang ambang edar mati. Operator menyalakannya lewat
-`SIGMA_AMBANG_OVERRIDE="sorgum:80,melon:75"` dan angkanya berstatus
+`MELHYB_AMBANG_OVERRIDE="sorgum:80,melon:75"` dan angkanya berstatus
 `diisi_operator`. `db.py` menyemai `Komoditas.min_daya_berkecambah` dengan
 angka contoh — kolom itu bukan sumber ambang; `grading.ambang_edar()`
 membacanya dari `standar.py`.
@@ -86,7 +86,7 @@ di dalam foto, jadi tidak ada mode "satu benih".
   perbarui bersamaan, kalau tidak sistem melaporkan angka yang tidak dipakai.
 - `LotFeatures.vector()` — **urutannya tetap**. Model `.joblib` yang sudah
   dilatih memakai urutan ini; menambah/menggeser fitur membatalkan model lama
-  di `SIGMA_MODEL_DIR` tanpa error yang terlihat.
+  di `MELHYB_MODEL_DIR` tanpa error yang terlihat.
 - Model dan laporannya disimpan sebagai berkas (`{komoditas}__{target}.joblib`
   / `.json`) di `model_dir`, bukan di DB; tabel `ModelKalibrasi` hanya cermin
   metriknya untuk UI.

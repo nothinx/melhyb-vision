@@ -1,4 +1,4 @@
-# SIGMA
+# MELHYB-VISION
 
 Penilaian mutu benih dari citra, dibangun ulang dengan satu aturan yang tidak
 bisa ditawar: **angka yang tidak bisa dipertanggungjawabkan tidak ditampilkan.**
@@ -183,7 +183,7 @@ browser. Hasil serta batas verifikasi perombakan dicatat di
 Penelusuran (31 Agustus 2026) menemukan hal yang perlu kalian ketahui sebelum
 menulis apa pun di proposal: **tidak ada SNI khusus untuk sorgum, melon, maupun
 edamame.** Yang terkonfirmasi hanya SNI 6233:2015 untuk benih padi. Rujukan yang
-berlaku untuk ketiga komoditas SIGMA adalah Kepmentan dan Permentan, bukan SNI.
+berlaku untuk ketiga komoditas MELHYB-VISION adalah Kepmentan dan Permentan, bukan SNI.
 
 | Komoditas | Rezim | Ambang yang dipakai | Status |
 |---|---|---|---|
@@ -205,7 +205,7 @@ penelusurannya tidak hilang — tanpa ikut mempengaruhi satu pun penilaian.
 Ada satu jalan, dan jalan itu lewat manusia yang sudah membaca dokumennya:
 
 ```bash
-SIGMA_AMBANG_OVERRIDE="sorgum:80,melon:75"
+MELHYB_AMBANG_OVERRIDE="sorgum:80,melon:75"
 ```
 
 Angka yang diisi begini berstatus `diisi_operator`: dipakai sistem, tetapi
@@ -228,7 +228,7 @@ Dokumen kuncinya:
 Dua hal yang harus kalian kerjakan sendiri:
 
 1. **Baca tabel ambang di dokumen aslinya**, lalu isi lewat
-   `SIGMA_AMBANG_OVERRIDE` dan ubah statusnya menjadi `terverifikasi` di
+   `MELHYB_AMBANG_OVERRIDE` dan ubah statusnya menjadi `terverifikasi` di
    `standar.py` sambil mencantumkan halaman dokumennya.
 2. **Edamame masuk rezim mana?** Secara botani ia Glycine max — kedelai, jadi
    tanaman pangan. Tetapi di Indonesia diperlakukan sebagai sayuran. Rezim mana

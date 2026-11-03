@@ -1,4 +1,4 @@
-# Rencana perombakan SIGMA Benih
+# Rencana perombakan MELHYB-VISION
 
 ## Cakupan
 
@@ -49,7 +49,7 @@ Hasil serta batas verifikasi tercatat di `LAPORAN-PEROMBAKAN.md`.
 | Ringkasan | Mutu benih, berawal dari satu foto. | Analisis mutu fisik benih dari foto |
 | Ringkasan | Setiap lot punya jejak pengukuran. | Ringkasan analisis |
 | Analisis | Satu foto berisi satu lot | Analisis lot benih |
-| Analisis | Yang diukur adalah sebaran antar benih di dalam lot… | Unggah foto satu lot berisi minimal 15 benih. SIGMA akan mengukur mutu fisik dan keseragaman benih dalam foto. |
+| Analisis | Yang diukur adalah sebaran antar benih di dalam lot… | Unggah foto satu lot berisi minimal 15 benih. MELHYB-VISION akan mengukur mutu fisik dan keseragaman benih dalam foto. |
 | Analisis | Kamera / Berkas | Ambil foto / Pilih foto |
 | Analisis | Konsistensi cara memotret adalah syarat agar morfometrik antar lot bisa dibandingkan sama sekali. | Gunakan pencahayaan dan posisi kamera yang sama agar hasil antar lot lebih mudah dibandingkan. |
 | Hasil | Citra beranotasi | Foto dengan penanda benih |

@@ -13,11 +13,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
-    app_name: str = "SIGMA"
-    # SIGMA_DATABASE_URL, atau DATABASE_URL yang dipasang integrasi Neon di
+    app_name: str = "MELHYB-VISION"
+    # MELHYB_DATABASE_URL, atau DATABASE_URL yang dipasang integrasi Neon di
     # Vercel. Foto dan model kalibrasi ikut tersimpan di sini (app/berkas.py).
-    database_url: str = Field(f"sqlite:///{BASE_DIR / 'sigma.db'}",
-                              validation_alias=AliasChoices("SIGMA_DATABASE_URL",
+    database_url: str = Field(f"sqlite:///{BASE_DIR / 'melhyb.db'}",
+                              validation_alias=AliasChoices("MELHYB_DATABASE_URL",
                                                             "DATABASE_URL"))
     # Model segmentasi + kelas baik/cacat (YOLO26s-seg v3, ONNX). Tidak ada
     # berkasnya -> kembali ke segmentasi Otsu + ambang solidity.
@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     # isi di sini dan angkanya langsung dipakai - dengan label "diisi operator",
     # bukan menyamar sebagai angka yang terverifikasi.
     #
-    #   SIGMA_AMBANG_OVERRIDE="sorgum:80,melon:75"
+    #   MELHYB_AMBANG_OVERRIDE="sorgum:80,melon:75"
     ambang_override: str = ""
 
     def ambang_operator(self) -> dict[str, float]:
@@ -81,7 +81,7 @@ class Settings(BaseSettings):
     # R^2 hasil validasi silang minimum sebelum model boleh menyajikan prediksi.
     min_calibration_r2: float = 0.30
 
-    model_config = SettingsConfigDict(env_prefix="SIGMA_", env_file=".env",
+    model_config = SettingsConfigDict(env_prefix="MELHYB_", env_file=".env",
                                       extra="ignore")
 
 

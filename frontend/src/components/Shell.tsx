@@ -23,7 +23,7 @@ type Tema = "sistem" | "terang" | "gelap";
 function TombolTema() {
   const [tema, setTema] = useState<Tema>(() => {
     try {
-      const t = localStorage.getItem("sigma-tema");
+      const t = localStorage.getItem("melhyb-tema");
       return t === "terang" || t === "gelap" ? t : "sistem";
     } catch { return "sistem"; }
   });
@@ -31,7 +31,7 @@ function TombolTema() {
     const h = document.documentElement;
     if (tema === "sistem") h.removeAttribute("data-theme");
     else h.setAttribute("data-theme", tema === "gelap" ? "dark" : "light");
-    try { localStorage.setItem("sigma-tema", tema); } catch { /* Penyimpanan dibatasi. */ }
+    try { localStorage.setItem("melhyb-tema", tema); } catch { /* Penyimpanan dibatasi. */ }
   }, [tema]);
   const urutan: Tema[] = ["sistem", "terang", "gelap"];
   const Ikon = { sistem: Monitor, terang: Sun, gelap: Moon }[tema];
@@ -75,7 +75,7 @@ export default function Shell() {
   useEffect(() => { void periksaBackend(); }, []);
   useEffect(() => {
     const label = [...UTAMA, ...REFERENSI].find(({ ke }) => lokasi.pathname === ke)?.label;
-    document.title = label && label !== "Beranda" ? `${label} | SIGMA Melon` : "SIGMA | Mutu benih melon dari satu foto";
+    document.title = label && label !== "Beranda" ? `${label} | MELHYB-VISION` : "MELHYB-VISION | Mutu benih melon dari satu foto";
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [lokasi.pathname]);
   // Menu ditutup saat pindah halaman: dilacak lewat state turunan, bukan effect.
@@ -106,9 +106,9 @@ export default function Shell() {
             tergulir || !diBeranda || menu
               ? "border-line bg-[var(--kaca)] shadow-[var(--bayang)] backdrop-blur-xl backdrop-saturate-150"
               : "border-transparent bg-transparent"}`}>
-            <Link to="/" className="flex shrink-0 items-center gap-2.5 text-accent" aria-label="SIGMA, beranda">
+            <Link to="/" className="flex shrink-0 items-center gap-2.5 text-accent" aria-label="MELHYB-VISION, beranda">
               <Lambang ukuran={30} />
-              <span className="display-kecil text-[1.05rem] tracking-tight text-ink">SIGMA<span className="text-muted"> melon</span></span>
+              <span className="display-kecil text-[1.05rem] tracking-tight text-ink">MELHYB<span className="text-muted">-VISION</span></span>
             </Link>
 
             <nav className="mx-auto hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
@@ -198,7 +198,7 @@ export default function Shell() {
       <footer className="relative overflow-hidden border-t border-line">
         <div className="bingkai grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3 text-accent"><Lambang ukuran={36} /><span className="display text-[1.6rem] text-ink">SIGMA</span></div>
+            <div className="flex items-center gap-3 text-accent"><Lambang ukuran={36} /><span className="display text-[1.6rem] text-ink">MELHYB-VISION</span></div>
             <p className="mt-4 mb-0 max-w-[38ch] text-dasar text-muted">
               Penilaian mutu fisik benih melon dari citra. Hasil analisis bukan pengganti sertifikasi benih resmi.
             </p>
@@ -215,7 +215,7 @@ export default function Shell() {
         {/* AGPL-3.0 (model Ultralytics YOLO26): pengguna layanan berhak atas kode sumbernya. */}
         <p className="bingkai m-0 pb-6 text-kecil text-muted">
           Perangkat lunak bebas berlisensi AGPL-3.0, memakai model segmentasi YOLO26 (Ultralytics).{" "}
-          <a href="https://github.com/nothinx/sigma-benih" className="text-ink-2 underline hover:text-accent">Kode sumber</a>
+          <a href="https://github.com/nothinx/melhyb-vision" className="text-ink-2 underline hover:text-accent">Kode sumber</a>
         </p>
         <div aria-hidden className="display pointer-events-none -mb-[0.18em] text-center text-[clamp(5rem,22vw,20rem)] leading-none text-surface-2 select-none">
           melon

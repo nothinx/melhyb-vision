@@ -59,7 +59,7 @@ export default function Metodologi() {
   return (
     <div className="grid gap-20">
       <Muncul as="header" className="max-w-[900px]">
-        <h1 className="display m-0 text-[clamp(2.4rem,5.2vw,4.2rem)] text-ink">Cara SIGMA menilai.</h1>
+        <h1 className="display m-0 text-[clamp(2.4rem,5.2vw,4.2rem)] text-ink">Cara MELHYB-VISION menilai.</h1>
         <p className="mt-5 mb-0 max-w-[58ch] text-sedang text-ink-2">Semua bobot dan ambang di halaman ini dibaca langsung dari sistem yang berjalan, bukan disalin ulang.</p>
         <p className="display-kecil mt-10 mb-0 rounded-[28px] border border-line bg-surface p-7 text-[clamp(1.2rem,2.2vw,1.6rem)] text-ink">
           Unit analisis: {m.unit_analisis}.

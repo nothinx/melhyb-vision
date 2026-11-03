@@ -1,6 +1,6 @@
 {
-  "name": "SIGMA | Penilaian mutu benih",
-  "short_name": "SIGMA",
+  "name": "MELHYB-VISION | Penilaian mutu benih",
+  "short_name": "MELHYB-VISION",
   "description": "Analisis mutu fisik lot benih dari foto, dengan estimasi perkecambahan setelah model lolos validasi.",
   "lang": "id",
   "start_url": "/",

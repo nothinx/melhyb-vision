@@ -23,7 +23,7 @@ COPY --from=frontend /frontend/dist /srv/frontend/dist
 
 # Data di /data (volume compose). Dimiliki uid 1000 karena Hugging Face
 # Spaces menjalankan container sebagai user non-root itu.
-ENV SIGMA_DATABASE_URL=sqlite:////data/sigma.db
+ENV MELHYB_DATABASE_URL=sqlite:////data/melhyb.db
 RUN mkdir -p /data && chown 1000:1000 /data
 
 WORKDIR /srv/backend

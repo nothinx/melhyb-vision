@@ -74,9 +74,9 @@ export const DEMO_STANDAR: StandarResponse = {
   catatan: "Ambang yang belum tersedia tidak digunakan untuk menilai kelayakan edar. Angka dari sumber yang belum terverifikasi dicatat sebagai informasi dan tidak ikut menentukan hasil.",
   isian_operator: {
     aktif: {},
-    variabel: "SIGMA_AMBANG_OVERRIDE",
-    contoh: 'SIGMA_AMBANG_OVERRIDE="melon:75"',
-    penjelasan: "Pengelola server dapat mengisi ambang melalui SIGMA_AMBANG_OVERRIDE setelah memeriksa dokumen acuan. Nilainya akan berstatus diisi operator dan status tersebut dicantumkan pada hasil analisis.",
+    variabel: "MELHYB_AMBANG_OVERRIDE",
+    contoh: 'MELHYB_AMBANG_OVERRIDE="melon:75"',
+    penjelasan: "Pengelola server dapat mengisi ambang melalui MELHYB_AMBANG_OVERRIDE setelah memeriksa dokumen acuan. Nilainya akan berstatus diisi operator dan status tersebut dicantumkan pada hasil analisis.",
   },
   komoditas: [
     {

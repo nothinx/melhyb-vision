@@ -8,10 +8,10 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-_tmp = tempfile.mkdtemp(prefix="sigma-test-")
-os.environ["SIGMA_DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
+_tmp = tempfile.mkdtemp(prefix="melhyb-test-")
+os.environ["MELHYB_DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
 # Fixture sintetis bukan foto light box: uji jalur Otsu, YOLO diuji di test_yolo.py.
-os.environ["SIGMA_YOLO_MODEL"] = f"{_tmp}/tanpa-model.onnx"
+os.environ["MELHYB_YOLO_MODEL"] = f"{_tmp}/tanpa-model.onnx"
 
 from fastapi.testclient import TestClient          # noqa: E402
 from app.main import app                            # noqa: E402

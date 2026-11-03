@@ -1,15 +1,15 @@
 services:
-  sigma:
+  melhyb-vision:
     build:
       context: .
       dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
     environment:
-      SIGMA_DATABASE_URL: sqlite:////data/sigma.db
+      MELHYB_DATABASE_URL: sqlite:////data/melhyb.db
     volumes:
-      - sigma-data:/data
+      - melhyb-data:/data
     restart: unless-stopped
 
 volumes:
-  sigma-data:
+  melhyb-data:

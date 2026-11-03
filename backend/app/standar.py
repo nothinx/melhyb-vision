@@ -140,7 +140,7 @@ STANDAR: dict[str, StandarKomoditas] = {
             None, "%", StatusVerifikasi.BELUM_ADA,
             "Ambang belum digunakan. Angka 95% dari ringkasan belum "
             "dicocokkan dengan tabel pada dokumen acuan. Pengelola dapat "
-            "mengisi ambang melalui SIGMA_AMBANG_OVERRIDE setelah "
+            "mengisi ambang melalui MELHYB_AMBANG_OVERRIDE setelah "
             "memeriksa dokumennya."),
         kadar_air_maks=Ambang(
             None, "%", StatusVerifikasi.BELUM_ADA,
@@ -218,7 +218,7 @@ def terapkan_isian_operator() -> None:
         st.daya_berkecambah_min = Ambang(
             nilai, "%", StatusVerifikasi.DIISI_OPERATOR,
             f"Nilai {nilai:.0f}% diisi oleh operator melalui "
-            f"SIGMA_AMBANG_OVERRIDE dan belum diverifikasi. Periksa nilai ini "
+            f"MELHYB_AMBANG_OVERRIDE dan belum diverifikasi. Periksa nilai ini "
             f"pada dokumen acuan {st.regulasi[0]} sebelum menggunakan "
             f"hasilnya dalam laporan resmi.")
         st.peringatan = (

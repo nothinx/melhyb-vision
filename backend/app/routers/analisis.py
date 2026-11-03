@@ -156,4 +156,4 @@ def ekspor_csv(s: Session = Depends(get_session)):
     return StreamingResponse(
         iter([buf.getvalue()]), media_type="text/csv",
         headers={"Content-Disposition":
-                 "attachment; filename=sigma_analisis.csv"})
+                 "attachment; filename=melhyb_vision_analisis.csv"})

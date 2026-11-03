@@ -54,7 +54,7 @@ function Hero() {
         Mutu benih melon<br /><span className="text-accent">dari satu foto.</span>
       </h1>
       <p className="mt-6 mb-0 max-w-[40ch] text-sedang text-ink-2">
-        Unggah foto satu lot. SIGMA mengukur ukuran, warna, keutuhan, dan tekstur setiap benih di dalamnya.
+        Unggah foto satu lot. MELHYB-VISION mengukur ukuran, warna, keutuhan, dan tekstur setiap benih di dalamnya.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link to="/analisis" className="group inline-flex h-13 items-center gap-2 rounded-full bg-accent px-7 text-sedang font-semibold text-accent-ink shadow-[0_18px_40px_-16px_var(--accent)] transition-[filter,transform] hover:brightness-110 active:scale-[0.97]">
@@ -209,7 +209,7 @@ export default function Beranda() {
         <Muncul as="header" className="mb-12 max-w-[820px]">
           <h2 className="display m-0 text-[clamp(2rem,3.8vw,3.2rem)] text-ink">Angka perkecambahan tidak keluar sebelum layak.</h2>
           <p className="mt-5 mb-0 max-w-[60ch] text-sedang text-ink-2">
-            Daya berkecambah tidak terlihat di foto. SIGMA hanya memperkirakannya setelah model belajar dari {syarat} lot yang difoto dan diuji perkecambahan, dengan R² validasi minimal {r2.toLocaleString("id-ID")}.
+            Daya berkecambah tidak terlihat di foto. MELHYB-VISION hanya memperkirakannya setelah model belajar dari {syarat} lot yang difoto dan diuji perkecambahan, dengan R² validasi minimal {r2.toLocaleString("id-ID")}.
           </p>
         </Muncul>
         <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
