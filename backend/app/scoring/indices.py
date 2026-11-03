@@ -70,13 +70,19 @@ def compute_indices(lot: LotFeatures) -> list[Index]:
         f"Lekukan pada benih pecah atau keriput dapat menurunkan nilainya.",
     ))
 
+    if lot.sumber_cacat == "solidity":
+        dasar = "proporsi benih dengan solidity di bawah ambang cacat"
+        alasan = (f"karena kepadatan bentuknya (solidity) di bawah "
+                  f"{s.defect_solidity_threshold}.")
+    else:
+        dasar = f"proporsi benih berkelas cacat menurut model {lot.sumber_cacat}"
+        alasan = (f"oleh model segmentasi {lot.sumber_cacat} (conf {s.yolo_conf}), "
+                  f"dilatih pada foto light box melon VA/VB/VC.")
     idx.append(Index(
         "kebersihan_lot", "Bebas cacat fisik",
         (1.0 - lot.defect_fraction) * 100.0,
-        "proporsi benih dengan solidity di bawah ambang cacat",
-        lot.defect_fraction,
-        f"{lot.defect_fraction * 100:.1f}% benih ditandai memiliki cacat fisik "
-        f"karena kepadatan bentuknya (solidity) di bawah {s.defect_solidity_threshold}.",
+        dasar, lot.defect_fraction,
+        f"{lot.defect_fraction * 100:.1f}% benih ditandai memiliki cacat fisik {alasan}",
     ))
 
     idx.append(Index(

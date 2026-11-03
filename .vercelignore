@@ -1,0 +1,14 @@
+# Hanya yang dibutuhkan Dockerfile.vercel yang diunggah.
+/*
+!/Dockerfile.vercel
+!/backend
+!/frontend
+backend/.venv
+backend/storage
+backend/models
+backend/sigma.db
+backend/tests
+**/__pycache__
+**/node_modules
+frontend/dist
+frontend/dist-tunggal

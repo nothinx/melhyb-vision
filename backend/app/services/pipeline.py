@@ -19,6 +19,7 @@ from ..vision.features import (LotFeatures, aggregate_lot, defect_flags,
                                extract_seed_features)
 from ..vision.preprocess import (ImageGate, ScaleInfo, check_image,
                                  decode_image, detect_scale, gray_world_balance)
+from ..vision import yolo
 from ..vision.segment import annotate, segment_seeds
 
 
@@ -71,7 +72,11 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
     scale = detect_scale(balanced, marker_mm=marker_mm)
 
     # 2. Segmentasi: satu foto = satu lot berisi banyak benih.
-    seg = segment_seeds(balanced)
+    # YOLO memakai warna asli (begitu dilatih); cadangannya Otsu + watershed.
+    if yolo.tersedia(settings.yolo_model):
+        seg = yolo.segment_yolo(img, settings.yolo_model, settings.yolo_conf)
+    else:
+        seg = segment_seeds(balanced)
     if seg.count < settings.min_seeds_detected:
         raise AnalysisRejected({
             "pesan": (
@@ -94,7 +99,7 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
 
     # 3. Morfometrik terukur.
     feats = extract_seed_features(balanced, seg, scale)
-    lot = aggregate_lot(feats, settings.defect_solidity_threshold, scale)
+    lot = aggregate_lot(feats, settings.defect_solidity_threshold, scale, seg)
     indices = compute_indices(lot)
     imf = physical_quality_index(indices)
 
@@ -124,7 +129,7 @@ def run(data: bytes, komoditas: str, marker_mm: float = 20.0) -> AnalysisOutput:
     cv2.imwrite(str(img_path), img, [cv2.IMWRITE_JPEG_QUALITY, 90])
     cv2.imwrite(str(ann_path),
                 annotate(img, seg,
-                         defect_flags(feats, settings.defect_solidity_threshold)),
+                         defect_flags(feats, settings.defect_solidity_threshold, seg)),
                 [cv2.IMWRITE_JPEG_QUALITY, 90])
 
     return AnalysisOutput(

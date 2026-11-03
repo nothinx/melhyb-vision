@@ -21,6 +21,7 @@ class Segmentation:
     channel_used: str
     border_removed: int
     watershed_splits: int
+    cacat: dict[int, bool] | None = None   # kelas per benih dari YOLO; None = pakai solidity
 
 
 def _otsu_score(channel: np.ndarray) -> tuple[float, np.ndarray]:

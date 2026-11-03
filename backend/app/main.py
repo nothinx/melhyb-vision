@@ -10,6 +10,7 @@ from .db import init_db
 from .routers import analisis, batch, kalibrasi, katalog, standar
 from .scoring.grading import FINAL_WEIGHTS, GRADE_BANDS
 from .scoring.indices import PHYSICAL_WEIGHTS
+from .vision import yolo
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -76,6 +77,16 @@ def metodologi():
             "fraksi_jenuh_maksimum": settings.max_blown_fraction,
             "rentang_dinamis_minimum": settings.min_dynamic_range,
             "benih_minimum": settings.min_seeds_detected,
+        },
+        "model_segmentasi": {
+            "aktif": yolo.tersedia(settings.yolo_model),
+            "nama": yolo.NAMA,
+            "conf": settings.yolo_conf,
+            "masukan": f"ubin {yolo.SISI} px skala asli, tumpang {yolo.TUMPANG} px",
+            "uji": "wadah test S01-S03: akurasi per benih 0,995, cacat 658/665",
+            "batasan": "cacat pada lot VB/VC = benih VA jelek yang tercampur; "
+                       "foto light box dari tim yang sama",
+            "cadangan": "Otsu + watershed dan ambang solidity bila model tidak ada",
         },
         "normalisasi_indeks": {
             "cv_luas_skor_nol": settings.cv_area_worst,

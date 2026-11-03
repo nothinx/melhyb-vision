@@ -134,6 +134,8 @@ class LotFeatures:
     glcm_contrast_mean: float
     defect_fraction: float
     absolute_scale: bool
+    # Bukan bagian vector(): asal angka defect_fraction ("solidity" atau nama model).
+    sumber_cacat: str = "solidity"
 
     def vector(self) -> list[float]:
         """Vektor fitur untuk model kalibrasi. Urutan dijaga tetap."""
@@ -164,7 +166,7 @@ def _cv(values: np.ndarray) -> float:
 
 
 def aggregate_lot(feats: list[SeedFeature], defect_solidity: float,
-                  scale: ScaleInfo) -> LotFeatures:
+                  scale: ScaleInfo, seg: Segmentation | None = None) -> LotFeatures:
     if not feats:
         raise ValueError("Tidak ada benih terdeteksi untuk diagregasi.")
 
@@ -203,10 +205,15 @@ def aggregate_lot(feats: list[SeedFeature], defect_solidity: float,
         delta_e_mean=delta_e,
         glcm_homogeneity_mean=float(homo.mean()),
         glcm_contrast_mean=float(contr.mean()),
-        defect_fraction=float((sol < defect_solidity).mean()),
+        defect_fraction=float(np.mean(list(defect_flags(feats, defect_solidity, seg).values()))),
         absolute_scale=scale.absolute,
+        sumber_cacat=seg.channel_used if seg is not None and seg.cacat is not None else "solidity",
     )
 
 
-def defect_flags(feats: list[SeedFeature], threshold: float) -> dict[int, bool]:
+def defect_flags(feats: list[SeedFeature], threshold: float,
+                 seg: Segmentation | None = None) -> dict[int, bool]:
+    """Kelas YOLO bila ada, kalau tidak ambang solidity."""
+    if seg is not None and seg.cacat is not None:
+        return {f.label: seg.cacat.get(f.label, False) for f in feats}
     return {f.label: f.solidity < threshold for f in feats}

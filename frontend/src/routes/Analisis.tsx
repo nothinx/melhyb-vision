@@ -17,6 +17,24 @@ import type { HasilAnalisis, MasalahGerbang } from "../lib/types";
 import { penanda, tanpaTitik } from "../lib/varietas";
 
 const BATAS_BERKAS = 15_000_000;
+// Server di Vercel menolak badan permintaan > 4,5 MB. Foto besar dikompres
+// ulang ke JPEG pada resolusi ASLI: ukuran benih dalam piksel adalah ciri
+// cacat bagi model, jadi foto tidak boleh diperkecil.
+const BATAS_KIRIM = 4_000_000;
+async function muatKirim(f: File): Promise<File> {
+  if (f.size <= BATAS_KIRIM) return f;
+  const bmp = await createImageBitmap(f);
+  const c = document.createElement("canvas");
+  c.width = bmp.width;
+  c.height = bmp.height;
+  c.getContext("2d")!.drawImage(bmp, 0, 0);
+  bmp.close();
+  for (const q of [0.9, 0.8, 0.7, 0.6]) {
+    const b = await new Promise<Blob | null>((r) => c.toBlob(r, "image/jpeg", q));
+    if (b && b.size <= BATAS_KIRIM) return new File([b], f.name.replace(/\.\w+$/, ".jpg"), { type: "image/jpeg" });
+  }
+  throw new Error("Foto masih di atas 4 MB setelah dikompres. Kurangi resolusi kamera ke 12 MP atau kurang.");
+}
 const TAHAP_PROSES = ["Memeriksa ketajaman dan cahaya", "Mencari penanda skala", "Memisahkan tiap benih", "Menghitung lima indeks"];
 
 function Kamera({ onAmbil, onBatal }: { onAmbil: (f: File) => void; onBatal: () => void }) {
@@ -143,7 +161,7 @@ export default function Analisis() {
     setTahap(0);
     setGalat(null);
     try {
-      setHasil(await api.analisis(berkas, slug, varietasTerpilih?.id ?? null));
+      setHasil(await api.analisis(await muatKirim(berkas), slug, varietasTerpilih?.id ?? null));
       window.scrollTo({ top: 0, behavior: "instant" });
       void penyimpan.invalidateQueries({ queryKey: ["ringkasan"] });
       void penyimpan.invalidateQueries({ queryKey: ["riwayat"] });

@@ -17,3 +17,6 @@ _to_delete/
 
 # Snapshot zip lokal — dibuat ulang dari sumber, tidak di-commit
 *.zip
+
+.vercel
+.env*

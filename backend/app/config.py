@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     database_url: str = f"sqlite:///{BASE_DIR / 'sigma.db'}"
     storage_dir: Path = BASE_DIR / "storage"
     model_dir: Path = BASE_DIR / "models"
+    # Model segmentasi + kelas baik/cacat (YOLO26s-seg v3, ONNX). Tidak ada
+    # berkasnya -> kembali ke segmentasi Otsu + ambang solidity.
+    yolo_model: Path = BASE_DIR / "model_visi" / "benih_yolo_v3.onnx"
+    yolo_conf: float = 0.15              # dipilih dari wadah valid
 
     # --- Gerbang kualitas citra (W-12) -------------------------------------
     min_side_px: int = 640
